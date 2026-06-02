@@ -46,7 +46,7 @@
             --dark-light:  #242424;
             --white:       #F8F5EF;
             --off-white:   #EDE8DC;
-            --muted:       #7A7570;
+            --muted:       #E8E3D8;
             --font-serif:  'Cormorant Garamond', Georgia, serif;
             --font-sans:   'Raleway', sans-serif;
         }
@@ -212,7 +212,7 @@
         .test-text { font-family:var(--font-serif); font-size:18px; font-style:italic; color:var(--off-white); line-height:1.75; margin-bottom:36px; }
         .test-stars-sm { color:var(--gold); font-size:11px; letter-spacing:5px; margin-bottom:20px; }
         .test-author { font-size:10px; letter-spacing:3px; text-transform:uppercase; color:var(--muted); }
-        .test-cta { text-align:center; margin-top:64px; }
+        .test-cta { display:flex; flex-wrap:wrap; gap:18px; justify-content:center; margin-top:64px; }
 
         /* ── VISIT ── */
         .visit { display:grid; grid-template-columns:1fr 1fr; padding:0; }
@@ -312,6 +312,36 @@
         [data-i18n], [data-i18n-html] { transition:opacity .25s ease; }
         body.lang-switching [data-i18n],
         body.lang-switching [data-i18n-html] { opacity:0; }
+
+        /* ── WRITE-A-REVIEW MODAL ── */
+        .btn-outline { background:transparent; border:1px solid rgba(196,150,58,.5); color:var(--gold); padding:18px 52px; font-family:var(--font-sans); font-size:10px; letter-spacing:4px; text-transform:uppercase; font-weight:500; display:inline-block; cursor:pointer; transition:background .3s, color .3s; }
+        .btn-outline:hover { background:var(--gold); color:var(--black); }
+        .modal-overlay { position:fixed; inset:0; z-index:1000; display:flex; align-items:center; justify-content:center; padding:24px; background:rgba(4,4,4,.8); backdrop-filter:blur(8px); opacity:0; visibility:hidden; pointer-events:none; transition:opacity .3s, visibility .3s; cursor:auto; }
+        .modal-overlay.open { opacity:1; visibility:visible; pointer-events:auto; }
+        .modal { position:relative; width:100%; max-width:520px; max-height:90vh; overflow-y:auto; background:var(--dark-mid); border:1px solid rgba(196,150,58,.3); padding:clamp(30px,5vw,48px) clamp(22px,4vw,44px); transform:translateY(18px); transition:transform .3s; }
+        .modal-overlay.open .modal { transform:translateY(0); }
+        .modal-close { position:absolute; top:14px; right:20px; background:none; border:none; color:var(--muted); font-size:28px; line-height:1; cursor:pointer; transition:color .3s; }
+        .modal-close:hover { color:var(--gold); }
+        .modal h3 { font-family:var(--font-serif); font-size:34px; font-weight:300; line-height:1.1; margin-bottom:8px; }
+        .modal-sub { font-size:13px; color:var(--muted); line-height:1.6; margin-bottom:30px; }
+        .form-group { margin-bottom:22px; }
+        .form-group > label { display:block; font-size:9px; letter-spacing:3px; text-transform:uppercase; color:var(--gold); margin-bottom:10px; }
+        .form-input, .form-textarea { width:100%; background:var(--dark); border:1px solid rgba(196,150,58,.2); color:var(--white); padding:13px 15px; font-family:var(--font-sans); font-size:14px; font-weight:300; cursor:text; transition:border-color .3s; }
+        .form-input::placeholder, .form-textarea::placeholder { color:var(--muted); }
+        .form-input:focus, .form-textarea:focus { outline:none; border-color:var(--gold); }
+        .form-textarea { min-height:120px; line-height:1.6; resize:vertical; }
+        .rating-stars { display:flex; gap:10px; }
+        .rating-stars .star { background:none; border:none; padding:0; font-size:30px; line-height:1; cursor:pointer; color:rgba(196,150,58,.25); transition:color .2s, transform .2s; }
+        .rating-stars .star:hover { transform:scale(1.15); }
+        .rating-stars .star.on { color:var(--gold); }
+        .form-submit { width:100%; margin-top:6px; background:var(--gold); color:var(--black); border:none; padding:16px; font-family:var(--font-sans); font-size:10px; letter-spacing:4px; text-transform:uppercase; font-weight:500; cursor:pointer; transition:background .3s; }
+        .form-submit:hover { background:var(--gold-light); }
+        .form-submit:disabled { opacity:.5; cursor:default; }
+        .form-msg { display:none; margin-top:16px; font-size:13px; line-height:1.6; text-align:center; }
+        .form-msg.show { display:block; }
+        .form-msg.ok { color:var(--gold-light); }
+        .form-msg.err { color:#d98c6a; }
+        .form-msg a { color:var(--gold); text-decoration:underline; }
 
         /* ── RESPONSIVE ── */
         /* ── TABLET 1100 ── */
