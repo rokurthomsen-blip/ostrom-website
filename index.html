@@ -212,7 +212,32 @@
         .test-text { font-family:var(--font-serif); font-size:18px; font-style:italic; color:var(--off-white); line-height:1.75; margin-bottom:36px; }
         .test-stars-sm { color:var(--gold); font-size:11px; letter-spacing:5px; margin-bottom:20px; }
         .test-author { font-size:10px; letter-spacing:3px; text-transform:uppercase; color:var(--muted); }
-        .test-cta { text-align:center; margin-top:64px; }
+        .test-cta { margin-top:64px; display:flex; justify-content:center; align-items:center; gap:24px; flex-wrap:wrap; }
+
+        /* ── REVIEW MODAL ── */
+        .btn-outline-gold { background:transparent; color:var(--gold); border:1px solid rgba(196,150,58,.5); padding:18px 52px; font-family:var(--font-sans); font-size:10px; letter-spacing:4px; text-transform:uppercase; font-weight:500; display:inline-block; cursor:pointer; transition:background .3s, color .3s, transform .3s; }
+        .btn-outline-gold:hover { background:var(--gold); color:var(--black); transform:translateY(-2px); }
+        .modal-overlay { position:fixed; inset:0; z-index:1000; display:flex; align-items:center; justify-content:center; padding:24px; background:rgba(4,4,4,.82); backdrop-filter:blur(10px); opacity:0; visibility:hidden; transition:opacity .35s ease, visibility .35s ease; cursor:auto; }
+        .modal-overlay.open { opacity:1; visibility:visible; }
+        .review-modal { background:var(--dark-mid); border:1px solid rgba(196,150,58,.25); width:100%; max-width:520px; padding:56px 48px; position:relative; transform:translateY(24px) scale(.98); transition:transform .45s cubic-bezier(0.16,1,0.3,1); max-height:90vh; overflow-y:auto; }
+        .modal-overlay.open .review-modal { transform:none; }
+        .review-modal .label { margin-bottom:20px; }
+        .review-modal h3 { font-family:var(--font-serif); font-size:38px; font-weight:300; line-height:1.05; letter-spacing:-1px; margin-bottom:36px; }
+        .review-modal h3 em { font-style:italic; color:var(--gold); }
+        .review-close { position:absolute; top:20px; right:24px; background:none; border:none; color:var(--muted); font-size:28px; line-height:1; cursor:pointer; transition:color .3s, transform .3s; }
+        .review-close:hover { color:var(--gold); transform:rotate(90deg); }
+        .field { margin-bottom:28px; }
+        .field-label { display:block; font-size:10px; letter-spacing:3px; text-transform:uppercase; color:var(--muted); margin-bottom:14px; }
+        .star-input { display:flex; gap:10px; }
+        .star-input button { background:none; border:none; cursor:pointer; font-size:30px; line-height:1; color:rgba(196,150,58,.3); transition:color .2s, transform .2s; padding:0; }
+        .star-input button:hover { transform:scale(1.15); }
+        .star-input button.on { color:var(--gold); }
+        .review-modal input, .review-modal textarea { width:100%; background:var(--black); border:1px solid rgba(196,150,58,.18); color:var(--white); font-family:var(--font-sans); font-size:14px; font-weight:300; padding:14px 16px; cursor:text; transition:border-color .3s; }
+        .review-modal input:focus, .review-modal textarea:focus { outline:none; border-color:var(--gold); }
+        .review-modal input::placeholder, .review-modal textarea::placeholder { color:var(--muted); }
+        .review-modal textarea { resize:vertical; min-height:110px; line-height:1.6; }
+        .review-error { color:#d98c6a; font-size:11px; letter-spacing:1px; margin-top:-12px; margin-bottom:20px; min-height:14px; }
+        .review-modal .btn-gold { width:100%; text-align:center; border:none; cursor:pointer; }
 
         /* ── VISIT ── */
         .visit { display:grid; grid-template-columns:1fr 1fr; padding:0; }
@@ -747,8 +772,40 @@
     </div>
     <div class="test-cta reveal" data-delay="2">
         <a href="https://www.google.com/maps/search/%C3%96str%C3%B6m,+T%C3%B3rshavn" target="_blank" rel="noopener" class="btn-gold" data-i18n="test.all">See all reviews on Google</a>
+        <button type="button" class="btn-outline-gold" id="leave-review-btn" data-i18n="test.leave">Leave a Review</button>
     </div>
 </section>
+
+<!-- ══ REVIEW MODAL ══ -->
+<div class="modal-overlay" id="review-overlay" aria-hidden="true">
+    <div class="review-modal" role="dialog" aria-modal="true" aria-labelledby="review-title">
+        <button type="button" class="review-close" id="review-close" aria-label="Close">&times;</button>
+        <div class="label" data-i18n="review.label">Your Voice</div>
+        <h3 id="review-title" data-i18n-html="review.title">Leave a <em>Review</em></h3>
+        <form id="review-form" novalidate>
+            <div class="field">
+                <label class="field-label" data-i18n="review.rating">Your Rating</label>
+                <div class="star-input" id="star-input" role="radiogroup" aria-label="Rating">
+                    <button type="button" data-value="1" aria-label="1 star">★</button>
+                    <button type="button" data-value="2" aria-label="2 stars">★</button>
+                    <button type="button" data-value="3" aria-label="3 stars">★</button>
+                    <button type="button" data-value="4" aria-label="4 stars">★</button>
+                    <button type="button" data-value="5" aria-label="5 stars">★</button>
+                </div>
+            </div>
+            <div class="field">
+                <label class="field-label" for="review-name" data-i18n="review.name">Your Name</label>
+                <input type="text" id="review-name" name="name" maxlength="60" data-i18n-ph="review.name.ph" placeholder="e.g. Anna J">
+            </div>
+            <div class="field">
+                <label class="field-label" for="review-text" data-i18n="review.text">Your Review</label>
+                <textarea id="review-text" name="text" maxlength="500" data-i18n-ph="review.text.ph" placeholder="Tell us about your visit…"></textarea>
+            </div>
+            <div class="review-error" id="review-error" aria-live="polite"></div>
+            <button type="submit" class="btn-gold" data-i18n="review.submit">Submit Review</button>
+        </form>
+    </div>
+</div>
 
 <!-- ══ VISIT ══ -->
 <div class="visit" id="visit">
@@ -913,6 +970,19 @@ const t = {
     'test3.text':'Great shop with locally produced merchandise.',
     'test3.author':'Jan L · Google review',
     'test.all':'See all reviews on Google',
+    'test.leave':'Leave a Review',
+    'review.label':'Your Voice',
+    'review.title':'Leave a <em>Review</em>',
+    'review.rating':'Your Rating',
+    'review.name':'Your Name',
+    'review.name.ph':'e.g. Anna J',
+    'review.text':'Your Review',
+    'review.text.ph':'Tell us about your visit…',
+    'review.submit':'Submit Review',
+    'review.author':'Visitor review',
+    'review.err.rating':'Please choose a star rating.',
+    'review.err.name':'Please enter your name.',
+    'review.err.text':'Please write a short review.',
     'visit.label':'Come See Us',
     'visit.heading':'Come<br><em>visit</em><br>us',
     'day.monThu':'Monday – Thursday','day.fri':'Friday','day.sat':'Saturday','day.sun':'Sunday','closed':'Closed',
@@ -969,6 +1039,19 @@ const t = {
     'test3.text':'Great shop with locally produced merchandise.',
     'test3.author':'Jan L · Google dómur',
     'test.all':'Sí allar dómar á Google',
+    'test.leave':'Skriva ein dóm',
+    'review.label':'Tín rødd',
+    'review.title':'Skriva ein <em>dóm</em>',
+    'review.rating':'Tín meting',
+    'review.name':'Títt navn',
+    'review.name.ph':'t.d. Anna J',
+    'review.text':'Tín dómur',
+    'review.text.ph':'Sig okkum um vitjanina…',
+    'review.submit':'Send dóm',
+    'review.author':'Vitjandi dómur',
+    'review.err.rating':'Vinarliga vel eina stjørnumeting.',
+    'review.err.name':'Vinarliga skriva títt navn.',
+    'review.err.text':'Vinarliga skriva ein stuttan dóm.',
     'visit.label':'Finn okkum',
     'visit.heading':'Kom<br><em>vitja</em><br>okkum',
     'day.monThu':'Mánadagur – Hósdagur','day.fri':'Fríggjadagur','day.sat':'Leygardagur','day.sun':'Sunnudagur','closed':'Latað',
@@ -998,6 +1081,11 @@ function applyLang() {
     document.querySelectorAll('[data-i18n-html]').forEach(el => {
         const v = t[lang][el.dataset.i18nHtml];
         if (v !== undefined) el.innerHTML = v;
+    });
+    // input/textarea placeholders
+    document.querySelectorAll('[data-i18n-ph]').forEach(el => {
+        const v = t[lang][el.dataset.i18nPh];
+        if (v !== undefined) el.placeholder = v;
     });
     // ticker
     document.getElementById('tick1').innerHTML = t[lang]['ticker'];
@@ -1124,6 +1212,90 @@ document.querySelectorAll('.btn-gold').forEach(btn => {
     });
     btn.addEventListener('mouseleave', () => { btn.style.transform = ''; });
 });
+
+/* ── LEAVE A REVIEW MODAL ── */
+(function () {
+    const overlay  = document.getElementById('review-overlay');
+    const openBtn  = document.getElementById('leave-review-btn');
+    const closeBtn = document.getElementById('review-close');
+    const form     = document.getElementById('review-form');
+    const stars    = Array.from(document.querySelectorAll('#star-input button'));
+    const nameIn   = document.getElementById('review-name');
+    const textIn   = document.getElementById('review-text');
+    const errBox   = document.getElementById('review-error');
+    const grid     = document.querySelector('.test-grid');
+    if (!overlay || !openBtn || !grid) return;
+
+    let rating = 0;
+
+    function paintStars(n) {
+        stars.forEach(s => s.classList.toggle('on', Number(s.dataset.value) <= n));
+    }
+    stars.forEach(s => {
+        s.addEventListener('mouseenter', () => paintStars(Number(s.dataset.value)));
+        s.addEventListener('click', () => { rating = Number(s.dataset.value); paintStars(rating); errBox.textContent = ''; });
+    });
+    document.getElementById('star-input').addEventListener('mouseleave', () => paintStars(rating));
+
+    function openModal() {
+        overlay.classList.add('open');
+        overlay.setAttribute('aria-hidden', 'false');
+        document.body.style.overflow = 'hidden';
+        setTimeout(() => nameIn.focus(), 350);
+    }
+    function closeModal() {
+        overlay.classList.remove('open');
+        overlay.setAttribute('aria-hidden', 'true');
+        document.body.style.overflow = '';
+    }
+    openBtn.addEventListener('click', openModal);
+    closeBtn.addEventListener('click', closeModal);
+    overlay.addEventListener('click', e => { if (e.target === overlay) closeModal(); });
+    document.addEventListener('keydown', e => { if (e.key === 'Escape' && overlay.classList.contains('open')) closeModal(); });
+
+    function makeCard(r) {
+        const card = document.createElement('div');
+        card.className = 'test-card reveal in';
+        const filled = '★'.repeat(r.rating);
+        const empty  = '<span style="opacity:.45">★</span>'.repeat(5 - r.rating);
+        card.innerHTML =
+            '<div class="test-q">"</div>' +
+            '<p class="test-text"></p>' +
+            '<div class="test-stars-sm">' + filled + empty + '</div>' +
+            '<div class="test-author"></div>';
+        card.querySelector('.test-text').textContent = r.text;
+        const suffix = (t[lang] && t[lang]['review.author']) || 'Visitor review';
+        card.querySelector('.test-author').textContent = r.name + ' · ' + suffix;
+        return card;
+    }
+
+    // Restore any reviews this visitor previously left
+    let saved = [];
+    try { saved = JSON.parse(localStorage.getItem('ostrom-reviews') || '[]'); } catch (e) {}
+    saved.forEach(r => grid.insertBefore(makeCard(r), grid.firstChild));
+
+    form.addEventListener('submit', e => {
+        e.preventDefault();
+        const name = nameIn.value.trim();
+        const text = textIn.value.trim();
+        const T = t[lang] || t.en;
+        if (!rating)      { errBox.textContent = T['review.err.rating']; return; }
+        if (!name)        { errBox.textContent = T['review.err.name'];  nameIn.focus(); return; }
+        if (!text)        { errBox.textContent = T['review.err.text'];  textIn.focus(); return; }
+
+        const review = { rating, name, text };
+        grid.insertBefore(makeCard(review), grid.firstChild);
+        try {
+            saved.push(review);
+            localStorage.setItem('ostrom-reviews', JSON.stringify(saved));
+        } catch (e) {}
+
+        // reset
+        form.reset();
+        rating = 0; paintStars(0); errBox.textContent = '';
+        closeModal();
+    });
+})();
 
 /* ── HERO PARALLAX (desktop only) ── */
 if (!isTouch) {
