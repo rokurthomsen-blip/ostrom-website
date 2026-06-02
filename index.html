@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fo">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -495,9 +495,9 @@
         </ul>
 
         <div class="lang-switcher">
-            <button class="lang-opt active" data-lang="en" id="btn-en">EN</button>
+            <button class="lang-opt"        data-lang="en" id="btn-en">EN</button>
             <div class="lang-divider"></div>
-            <button class="lang-opt"        data-lang="fo" id="btn-fo">FO</button>
+            <button class="lang-opt active" data-lang="fo" id="btn-fo">FO</button>
         </div>
     </div>
 
@@ -925,7 +925,32 @@ const t = {
   }
 };
 
-let lang = 'en';
+let lang = 'fo';   // ← Default language when the site is opened. 'fo' = Faroese, 'en' = English.
+
+/* Apply the current language to every piece of text on the page */
+function applyLang() {
+    // plain text
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+        const v = t[lang][el.dataset.i18n];
+        if (v !== undefined) el.textContent = v;
+    });
+    // html content
+    document.querySelectorAll('[data-i18n-html]').forEach(el => {
+        const v = t[lang][el.dataset.i18nHtml];
+        if (v !== undefined) el.innerHTML = v;
+    });
+    // ticker
+    document.getElementById('tick1').innerHTML = t[lang]['ticker'];
+    document.getElementById('tick2').innerHTML = t[lang]['ticker'];
+    // title & lang attr
+    document.title = lang === 'fo'
+        ? 'Østrom — Listrikt Handverk · Tórshavn, Føroyar'
+        : 'Østrom — Artistic Handicrafts · Tórshavn, Faroe Islands';
+    document.documentElement.lang = lang;
+    // button state
+    document.getElementById('btn-en').classList.toggle('active', lang === 'en');
+    document.getElementById('btn-fo').classList.toggle('active', lang === 'fo');
+}
 
 function setLang(newLang) {
     if (newLang === lang) return;
@@ -934,34 +959,16 @@ function setLang(newLang) {
     document.body.classList.add('lang-switching');
 
     setTimeout(() => {
-        // plain text
-        document.querySelectorAll('[data-i18n]').forEach(el => {
-            const v = t[lang][el.dataset.i18n];
-            if (v !== undefined) el.textContent = v;
-        });
-        // html content
-        document.querySelectorAll('[data-i18n-html]').forEach(el => {
-            const v = t[lang][el.dataset.i18nHtml];
-            if (v !== undefined) el.innerHTML = v;
-        });
-        // ticker
-        document.getElementById('tick1').innerHTML = t[lang]['ticker'];
-        document.getElementById('tick2').innerHTML = t[lang]['ticker'];
-        // title & lang attr
-        document.title = lang === 'fo'
-            ? 'Østrom — Listrikt Handverk · Tórshavn, Føroyar'
-            : 'Østrom — Artistic Handicrafts · Tórshavn, Faroe Islands';
-        document.documentElement.lang = lang;
-        // button state
-        document.getElementById('btn-en').classList.toggle('active', lang === 'en');
-        document.getElementById('btn-fo').classList.toggle('active', lang === 'fo');
-
+        applyLang();
         document.body.classList.remove('lang-switching');
     }, 200);
 }
 
 document.getElementById('btn-en').addEventListener('click', () => setLang('en'));
 document.getElementById('btn-fo').addEventListener('click', () => setLang('fo'));
+
+/* Show the site in the default language (Faroese) the moment it loads */
+applyLang();
 
 /* ── TOUCH DEVICE DETECTION ── */
 const isTouch = ('ontouchstart' in window) || navigator.maxTouchPoints > 0;
