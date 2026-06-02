@@ -212,6 +212,7 @@
         .test-text { font-family:var(--font-serif); font-size:18px; font-style:italic; color:var(--off-white); line-height:1.75; margin-bottom:36px; }
         .test-stars-sm { color:var(--gold); font-size:11px; letter-spacing:5px; margin-bottom:20px; }
         .test-author { font-size:10px; letter-spacing:3px; text-transform:uppercase; color:var(--muted); }
+        .test-cta { text-align:center; margin-top:64px; }
 
         /* ── VISIT ── */
         .visit { display:grid; grid-template-columns:1fr 1fr; padding:0; }
@@ -744,6 +745,9 @@
             <div class="test-author" data-i18n="test3.author">Traveller from New York</div>
         </div>
     </div>
+    <div class="test-cta reveal" data-delay="2">
+        <a href="https://www.google.com/maps/search/%C3%96str%C3%B6m,+T%C3%B3rshavn" target="_blank" rel="noopener" class="btn-gold" data-i18n="test.all">See all reviews on Google</a>
+    </div>
 </section>
 
 <!-- ══ VISIT ══ -->
@@ -902,12 +906,13 @@ const t = {
     'test.label':'Reviews',
     'test.heading':'What visitors<br><em>are saying</em>',
     'test.count':'44 Google Reviews',
-    'test1.text':'An absolute gem in Tórshavn. The craftsmanship is extraordinary — every piece tells the story of these remarkable islands. I walked out with something I\'ll treasure forever.',
-    'test1.author':'Visitor from Copenhagen',
-    'test2.text':'I left with the most beautiful piece of art from this incredible shop. The staff were knowledgeable and genuinely passionate about each item. A must-visit in Tórshavn.',
-    'test2.author':'Tourist from London, UK',
-    'test3.text':'This is where you come when you want something truly unique from the Faroe Islands. Not a tourist trap — genuine art and craft of the highest order. Worth every króna.',
-    'test3.author':'Traveller from New York',
+    'test1.text':'A shop that contains art-gallery-quality local products — shawls, jewellery, glassware, designer knitwear.',
+    'test1.author':'Hilary P · Google review',
+    'test2.text':'High-end Faroese artisan shop, all from Faroese designers — clothing, jewellery, bags, wooden items, soaps, tea and posters.',
+    'test2.author':'Katja R · Google review',
+    'test3.text':'Great shop with locally produced merchandise.',
+    'test3.author':'Jan L · Google review',
+    'test.all':'See all reviews on Google',
     'visit.label':'Come See Us',
     'visit.heading':'Come<br><em>visit</em><br>us',
     'day.monThu':'Monday – Thursday','day.fri':'Friday','day.sat':'Saturday','day.sun':'Sunday','closed':'Closed',
@@ -957,12 +962,13 @@ const t = {
     'test.label':'Dómar',
     'test.heading':'Hvat vitjandar<br><em>siga</em>',
     'test.count':'44 Google Dómar',
-    'test1.text':'Ein heilt óvanligur staður í Tórshavn. Handverksliðugleikarnir eru ótrúligir — hvørt stykki fortelur søguna av hessum merkiligum oyggum. Eg gekk út við einki, sum eg mundi goyma til eilíftíðar.',
-    'test1.author':'Vitjandi frá Keypmannahavn',
-    'test2.text':'Eg fór av stað við fagurasta listverki úr hesi ótrúligu búðini. Starvsmaðurin var kunnugt og einlægt brennandi fyri hvørt stykki. Eitt skal-vitja í Tórshavn.',
-    'test2.author':'Ferðamaður frá London, UK',
-    'test3.text':'Hetta er staðurin, tú kemur til, tá ið tú vilt nakað sanniliga einlægt frá Føroyum. Ikki ein ferðamannagildrur — ekt list og handverk av hægsta máli. Vert hvønn króna.',
-    'test3.author':'Ferðandi frá New York',
+    'test1.text':'A shop that contains art-gallery-quality local products — shawls, jewellery, glassware, designer knitwear.',
+    'test1.author':'Hilary P · Google dómur',
+    'test2.text':'High-end Faroese artisan shop, all from Faroese designers — clothing, jewellery, bags, wooden items, soaps, tea and posters.',
+    'test2.author':'Katja R · Google dómur',
+    'test3.text':'Great shop with locally produced merchandise.',
+    'test3.author':'Jan L · Google dómur',
+    'test.all':'Sí allar dómar á Google',
     'visit.label':'Finn okkum',
     'visit.heading':'Kom<br><em>vitja</em><br>okkum',
     'day.monThu':'Mánadagur – Hósdagur','day.fri':'Fríggjadagur','day.sat':'Leygardagur','day.sun':'Sunnudagur','closed':'Latað',
