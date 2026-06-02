@@ -777,6 +777,7 @@
     </div>
     <div class="test-cta reveal" data-delay="2">
         <a href="https://www.google.com/maps/search/%C3%96str%C3%B6m,+T%C3%B3rshavn" target="_blank" rel="noopener" class="btn-gold" data-i18n="test.all">See all reviews on Google</a>
+        <button type="button" class="btn-outline" id="openReview" data-i18n="test.write">Leave a Review</button>
     </div>
 </section>
 
@@ -896,6 +897,38 @@
 }
 </script>
 
+<!-- ══ LEAVE-A-REVIEW MODAL ══ -->
+<div class="modal-overlay" id="reviewModal" role="dialog" aria-modal="true" aria-labelledby="reviewModalTitle">
+    <div class="modal">
+        <button type="button" class="modal-close" id="closeReview" aria-label="Close">&times;</button>
+        <div class="label in" data-i18n="rev.label">Your Experience</div>
+        <h3 id="reviewModalTitle" data-i18n="rev.title">Leave a Review</h3>
+        <p class="modal-sub" data-i18n="rev.sub">Tell us about your visit to Østrom.</p>
+        <form id="reviewForm" novalidate>
+            <div class="form-group">
+                <label for="revName" data-i18n="rev.name">Your name</label>
+                <input type="text" id="revName" class="form-input" maxlength="60" required placeholder="e.g. Anna J" data-i18n-ph="rev.name.ph">
+            </div>
+            <div class="form-group">
+                <label data-i18n="rev.rating">Your rating</label>
+                <div class="rating-stars" id="ratingStars" role="radiogroup" aria-label="Star rating">
+                    <button type="button" class="star" data-val="1" aria-label="1 star">&#9733;</button>
+                    <button type="button" class="star" data-val="2" aria-label="2 stars">&#9733;</button>
+                    <button type="button" class="star" data-val="3" aria-label="3 stars">&#9733;</button>
+                    <button type="button" class="star" data-val="4" aria-label="4 stars">&#9733;</button>
+                    <button type="button" class="star" data-val="5" aria-label="5 stars">&#9733;</button>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="revText" data-i18n="rev.desc">Your review</label>
+                <textarea id="revText" class="form-textarea" maxlength="1000" required placeholder="What did you love about your visit?" data-i18n-ph="rev.desc.ph"></textarea>
+            </div>
+            <button type="submit" class="form-submit" id="revSubmit" data-i18n="rev.submit">Submit Review</button>
+            <p class="form-msg" id="revMsg"></p>
+        </form>
+    </div>
+</div>
+
 <script>
 /* ── TRANSLATIONS ── */
 const t = {
@@ -943,6 +976,20 @@ const t = {
     'test3.text':'Great shop with locally produced merchandise.',
     'test3.author':'Jan L · Google review',
     'test.all':'See all reviews on Google',
+    'test.write':'Leave a Review',
+    'rev.label':'Your Experience',
+    'rev.title':'Leave a Review',
+    'rev.sub':'Tell us about your visit to Østrom.',
+    'rev.name':'Your name',
+    'rev.name.ph':'e.g. Anna J',
+    'rev.rating':'Your rating',
+    'rev.desc':'Your review',
+    'rev.desc.ph':'What did you love about your visit?',
+    'rev.submit':'Submit Review',
+    'rev.thanks':'Thank you — your review has been sent!',
+    'rev.mail':'Your email app is opening — just press send to finish.',
+    'rev.error':'Sorry, something went wrong. Please email info@ostrom.fo instead.',
+    'rev.incomplete':'Please add your name, a star rating, and a few words.',
     'visit.label':'Come See Us',
     'visit.heading':'Come<br><em>visit</em><br>us',
     'day.monThu':'Monday – Thursday','day.fri':'Friday','day.sat':'Saturday','day.sun':'Sunday','closed':'Closed',
@@ -999,6 +1046,20 @@ const t = {
     'test3.text':'Great shop with locally produced merchandise.',
     'test3.author':'Jan L · Google dómur',
     'test.all':'Sí allar dómar á Google',
+    'test.write':'Skriva ein dóm',
+    'rev.label':'Tín uppliving',
+    'rev.title':'Skriva ein dóm',
+    'rev.sub':'Sig okkum um vitjanina hjá Østrom.',
+    'rev.name':'Títt navn',
+    'rev.name.ph':'t.d. Anna J',
+    'rev.rating':'Tín einkun',
+    'rev.desc':'Tín dómur',
+    'rev.desc.ph':'Hvat dámdi tær um vitjanina?',
+    'rev.submit':'Send dóm',
+    'rev.thanks':'Takk fyri! Tín dómur er sendur.',
+    'rev.mail':'Tín teldupostur opnast — trýst send fyri at lúka.',
+    'rev.error':'Tíverri, okkurt fór skeivt. Send vinaliga ein teldupost til info@ostrom.fo.',
+    'rev.incomplete':'Vinarliga skriva navn, eina einkun og nøkur orð.',
     'visit.label':'Finn okkum',
     'visit.heading':'Kom<br><em>vitja</em><br>okkum',
     'day.monThu':'Mánadagur – Hósdagur','day.fri':'Fríggjadagur','day.sat':'Leygardagur','day.sun':'Sunnudagur','closed':'Latað',
@@ -1028,6 +1089,11 @@ function applyLang() {
     document.querySelectorAll('[data-i18n-html]').forEach(el => {
         const v = t[lang][el.dataset.i18nHtml];
         if (v !== undefined) el.innerHTML = v;
+    });
+    // placeholders
+    document.querySelectorAll('[data-i18n-ph]').forEach(el => {
+        const v = t[lang][el.dataset.i18nPh];
+        if (v !== undefined) el.placeholder = v;
     });
     // ticker
     document.getElementById('tick1').innerHTML = t[lang]['ticker'];
@@ -1163,6 +1229,68 @@ if (!isTouch) {
         if(heroTitle && y < window.innerHeight) heroTitle.style.transform = `translateY(${y*.18}px)`;
     }, { passive:true });
 }
+
+/* ── LEAVE-A-REVIEW FORM ── */
+// To deliver reviews straight to your inbox, paste your free Web3Forms access key
+// below (get one in ~1 min at https://web3forms.com using info@ostrom.fo). Until then,
+// the form falls back to opening the visitor's email app addressed to you.
+const REVIEW_FORM_KEY = 'YOUR-WEB3FORMS-KEY';
+
+const reviewModal   = document.getElementById('reviewModal');
+const openReviewBtn = document.getElementById('openReview');
+const reviewForm    = document.getElementById('reviewForm');
+const revMsg        = document.getElementById('revMsg');
+const revSubmit     = document.getElementById('revSubmit');
+let reviewRating = 0;
+
+function openReviewModal()  { reviewModal.classList.add('open');    document.body.style.overflow = 'hidden'; }
+function closeReviewModal() { reviewModal.classList.remove('open'); document.body.style.overflow = ''; }
+
+openReviewBtn.addEventListener('click', openReviewModal);
+document.getElementById('closeReview').addEventListener('click', closeReviewModal);
+reviewModal.addEventListener('click', e => { if (e.target === reviewModal) closeReviewModal(); });
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeReviewModal(); });
+
+const starBtns = document.querySelectorAll('#ratingStars .star');
+function paintStars(n) { starBtns.forEach(s => s.classList.toggle('on', Number(s.dataset.val) <= n)); }
+starBtns.forEach(s => {
+    s.addEventListener('click',      () => { reviewRating = Number(s.dataset.val); paintStars(reviewRating); });
+    s.addEventListener('mouseenter', () => paintStars(Number(s.dataset.val)));
+});
+document.getElementById('ratingStars').addEventListener('mouseleave', () => paintStars(reviewRating));
+
+function showRevMsg(text, ok) { revMsg.textContent = text; revMsg.className = 'form-msg show ' + (ok ? 'ok' : 'err'); }
+
+reviewForm.addEventListener('submit', e => {
+    e.preventDefault();
+    const name = document.getElementById('revName').value.trim();
+    const text = document.getElementById('revText').value.trim();
+    if (!name || !reviewRating || !text) { showRevMsg(t[lang]['rev.incomplete'], false); return; }
+
+    if (REVIEW_FORM_KEY.indexOf('YOUR-') === -1) {
+        revSubmit.disabled = true;
+        const fd = new FormData();
+        fd.append('access_key', REVIEW_FORM_KEY);
+        fd.append('subject', 'New website review — ' + reviewRating + ' stars from ' + name);
+        fd.append('from_name', 'Østrom website');
+        fd.append('Name', name);
+        fd.append('Rating', reviewRating + ' / 5');
+        fd.append('Review', text);
+        fetch('https://api.web3forms.com/submit', { method: 'POST', body: fd })
+            .then(r => r.json())
+            .then(d => {
+                revSubmit.disabled = false;
+                if (d.success) { reviewForm.reset(); reviewRating = 0; paintStars(0); showRevMsg(t[lang]['rev.thanks'], true); }
+                else { showRevMsg(t[lang]['rev.error'], false); }
+            })
+            .catch(() => { revSubmit.disabled = false; showRevMsg(t[lang]['rev.error'], false); });
+    } else {
+        const subject = 'New review — ' + reviewRating + ' stars from ' + name;
+        const body = 'Name: ' + name + '\nRating: ' + reviewRating + ' / 5\n\n' + text;
+        window.location.href = 'mailto:info@ostrom.fo?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
+        showRevMsg(t[lang]['rev.mail'], true);
+    }
+});
 </script>
 </body>
 </html>
