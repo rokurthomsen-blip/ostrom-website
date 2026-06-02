@@ -6,6 +6,28 @@
     <meta name="description" content="Østrom — Artistic handicrafts from the heart of Tórshavn, Faroe Islands. Discover authentic Faroese art, textiles, and sculptures.">
     <title>Østrom — Artistic Handicrafts · Tórshavn, Faroe Islands</title>
 
+    <!-- ── Browser tab icon (favicon) ── -->
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <meta name="theme-color" content="#0c0c0c">
+
+    <!-- ── Search engine info ── -->
+    <link rel="canonical" href="https://ostrom-website.vercel.app/">
+    <meta name="author" content="Østrom">
+
+    <!-- ── Social share preview (Facebook, WhatsApp, Messenger, etc.) ── -->
+    <meta property="og:type" content="business.business">
+    <meta property="og:site_name" content="Østrom">
+    <meta property="og:title" content="Østrom — Artistic Handicrafts · Tórshavn, Faroe Islands">
+    <meta property="og:description" content="Authentic Faroese handicrafts from the heart of Tórshavn — textiles, fine art, and sculpture shaped by the North Atlantic.">
+    <meta property="og:image" content="https://ostrom-website.vercel.app/images/campaign.jpg">
+    <meta property="og:url" content="https://ostrom-website.vercel.app/">
+    <meta property="og:locale" content="fo_FO">
+    <meta property="og:locale:alternate" content="en_GB">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Østrom — Artistic Handicrafts · Tórshavn, Faroe Islands">
+    <meta name="twitter:description" content="Authentic Faroese handicrafts from the heart of Tórshavn — textiles, fine art, and sculpture shaped by the North Atlantic.">
+    <meta name="twitter:image" content="https://ostrom-website.vercel.app/images/campaign.jpg">
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Raleway:wght@200;300;400;500;600&display=swap" rel="stylesheet">
@@ -810,6 +832,38 @@
     </div>
 </footer>
 
+<!-- ── Business info for Google (address, hours, map location) ── -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Store",
+  "name": "Østrom",
+  "description": "Authentic Faroese handicrafts from the heart of Tórshavn — textiles, fine art, and sculpture shaped by the North Atlantic.",
+  "image": "https://ostrom-website.vercel.app/images/campaign.jpg",
+  "url": "https://ostrom-website.vercel.app/",
+  "telephone": "+298312222",
+  "email": "info@ostrom.fo",
+  "priceRange": "$$",
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "Skálatrøð 18",
+    "addressLocality": "Tórshavn",
+    "postalCode": "100",
+    "addressCountry": "FO"
+  },
+  "geo": {
+    "@type": "GeoCoordinates",
+    "latitude": 62.0107,
+    "longitude": -6.769
+  },
+  "openingHoursSpecification": [
+    { "@type": "OpeningHoursSpecification", "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday"], "opens": "10:00", "closes": "17:30" },
+    { "@type": "OpeningHoursSpecification", "dayOfWeek": "Friday", "opens": "10:00", "closes": "18:00" },
+    { "@type": "OpeningHoursSpecification", "dayOfWeek": "Saturday", "opens": "10:00", "closes": "16:00" }
+  ]
+}
+</script>
+
 <script>
 /* ── TRANSLATIONS ── */
 const t = {
@@ -865,7 +919,7 @@ const t = {
     'foot.nav':'Navigate','foot.col.visit':'Visit','foot.connect':'Connect',
     'foot.home':'Home','foot.about':'About','foot.crafts':'Our Crafts','foot.gallery':'Gallery','foot.reviews':'Reviews',
     'foot.hours':'Opening Hours','foot.directions':'Directions','foot.contact':'Contact Us',
-    'foot.copy':'© 2025 Østrom · 18 Skálatrøð · Tórshavn 100 · Faroe Islands',
+    'foot.copy':'© {YEAR} Østrom · 18 Skálatrøð · Tórshavn 100 · Faroe Islands',
     'ticker':'Handcrafted <span class="dot"></span> Artistic <span class="dot"></span> Authentic Faroese <span class="dot"></span> Timeless <span class="dot"></span> Tórshavn <span class="dot"></span> 18 Skálatrøð <span class="dot"></span> Handcrafted <span class="dot"></span> Artistic <span class="dot"></span> Authentic Faroese <span class="dot"></span> Timeless <span class="dot"></span> Tórshavn <span class="dot"></span> 18 Skálatrøð <span class="dot"></span>',
   },
   fo: {
@@ -920,12 +974,14 @@ const t = {
     'foot.nav':'Fara','foot.col.visit':'Vitja','foot.connect':'Samband',
     'foot.home':'Heim','foot.about':'Um okkum','foot.crafts':'Handverk okkara','foot.gallery':'Myndasavn','foot.reviews':'Dómar',
     'foot.hours':'Opnunartímar','foot.directions':'Leiðbeining','foot.contact':'Samband við okkum',
-    'foot.copy':'© 2025 Østrom · 18 Skálatrøð · Tórshavn 100 · Føroyar',
+    'foot.copy':'© {YEAR} Østrom · 18 Skálatrøð · Tórshavn 100 · Føroyar',
     'ticker':'Handgjørt <span class="dot"></span> Listrænt <span class="dot"></span> Ektað Føroysk <span class="dot"></span> Eilíft <span class="dot"></span> Tórshavn <span class="dot"></span> 18 Skálatrøð <span class="dot"></span> Handgjørt <span class="dot"></span> Listrænt <span class="dot"></span> Ektað Føroysk <span class="dot"></span> Eilíft <span class="dot"></span> Tórshavn <span class="dot"></span> 18 Skálatrøð <span class="dot"></span>',
   }
 };
 
-let lang = 'fo';   // ← Default language when the site is opened. 'fo' = Faroese, 'en' = English.
+// Default language is Faroese ('fo'). A returning visitor's saved choice (if any) wins.
+let lang = 'fo';
+try { const saved = localStorage.getItem('ostrom-lang'); if (saved === 'en' || saved === 'fo') lang = saved; } catch (e) {}
 
 /* Apply the current language to every piece of text on the page */
 function applyLang() {
@@ -950,11 +1006,15 @@ function applyLang() {
     // button state
     document.getElementById('btn-en').classList.toggle('active', lang === 'en');
     document.getElementById('btn-fo').classList.toggle('active', lang === 'fo');
+    // dynamic copyright year (replaces {YEAR} in the footer)
+    const copy = document.querySelector('[data-i18n="foot.copy"]');
+    if (copy) copy.textContent = copy.textContent.replace('{YEAR}', new Date().getFullYear());
 }
 
 function setLang(newLang) {
     if (newLang === lang) return;
     lang = newLang;
+    try { localStorage.setItem('ostrom-lang', newLang); } catch (e) {}
 
     document.body.classList.add('lang-switching');
 
