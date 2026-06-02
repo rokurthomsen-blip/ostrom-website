@@ -1,0 +1,1067 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Østrom — Artistic handicrafts from the heart of Tórshavn, Faroe Islands. Discover authentic Faroese art, textiles, and sculptures.">
+    <title>Østrom — Artistic Handicrafts · Tórshavn, Faroe Islands</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Raleway:wght@200;300;400;500;600&display=swap" rel="stylesheet">
+
+    <style>
+        *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+
+        :root {
+            --gold:        #C4963A;
+            --gold-light:  #D4AD5C;
+            --gold-pale:   #E8D5A8;
+            --gold-glow:   rgba(196,150,58,0.12);
+            --black:       #080808;
+            --dark:        #101010;
+            --dark-mid:    #181818;
+            --dark-light:  #242424;
+            --white:       #F8F5EF;
+            --off-white:   #EDE8DC;
+            --muted:       #7A7570;
+            --font-serif:  'Cormorant Garamond', Georgia, serif;
+            --font-sans:   'Raleway', sans-serif;
+        }
+
+        html { scroll-behavior:smooth; font-size:16px; }
+        body { background:var(--black); color:var(--white); font-family:var(--font-sans); font-weight:300; line-height:1.7; overflow-x:hidden; cursor:none; }
+        ::selection { background:var(--gold); color:var(--black); }
+        ::-webkit-scrollbar { width:3px; }
+        ::-webkit-scrollbar-track { background:var(--black); }
+        ::-webkit-scrollbar-thumb { background:var(--gold); border-radius:2px; }
+        img { display:block; width:100%; height:100%; object-fit:cover; }
+        a { color:inherit; text-decoration:none; }
+
+        /* ── CURSOR ── */
+        .cursor { position:fixed; top:0; left:0; width:10px; height:10px; background:var(--gold); border-radius:50%; pointer-events:none; z-index:9999; transform:translate(-50%,-50%); }
+        .cursor-follower { position:fixed; top:0; left:0; width:36px; height:36px; border:1px solid rgba(196,150,58,.4); border-radius:50%; pointer-events:none; z-index:9998; transition:transform .4s ease, width .3s ease, height .3s ease; transform:translate(-50%,-50%); }
+        .cursor-expand .cursor-follower { width:60px; height:60px; border-color:var(--gold); }
+
+        /* ── NAV ── */
+        nav { position:fixed; top:0; left:0; right:0; z-index:900; padding:28px 64px; display:flex; align-items:center; justify-content:space-between; transition:padding .5s, background .5s, border-color .5s; border-bottom:1px solid transparent; }
+        nav.scrolled { padding:16px 64px; background:rgba(8,8,8,.9); backdrop-filter:blur(24px); border-bottom-color:rgba(196,150,58,.15); }
+        .nav-logo { font-family:var(--font-serif); font-size:26px; font-weight:400; letter-spacing:5px; text-transform:uppercase; }
+        .nav-logo span { color:var(--gold); }
+        .nav-right { display:flex; align-items:center; gap:40px; }
+        .nav-links { display:flex; gap:48px; list-style:none; }
+        .nav-links a { font-size:10px; letter-spacing:3.5px; text-transform:uppercase; color:var(--muted); transition:color .3s; }
+        .nav-links a:hover { color:var(--gold); }
+        .nav-cta { border:1px solid rgba(196,150,58,.5) !important; color:var(--gold) !important; padding:10px 28px; transition:background .3s, color .3s !important; }
+        .nav-cta:hover { background:var(--gold) !important; color:var(--black) !important; }
+
+        /* ── LANGUAGE SWITCHER ── */
+        .lang-switcher { display:flex; align-items:center; border:1px solid rgba(196,150,58,.3); overflow:hidden; flex-shrink:0; }
+        .lang-opt { padding:8px 14px; background:transparent; border:none; color:var(--muted); cursor:pointer; font-family:var(--font-sans); font-size:9px; letter-spacing:3px; text-transform:uppercase; transition:background .3s, color .3s; }
+        .lang-opt:hover { color:var(--white); }
+        .lang-opt.active { background:var(--gold); color:var(--black); font-weight:500; }
+        .lang-divider { width:1px; height:14px; background:rgba(196,150,58,.3); flex-shrink:0; }
+
+        .hamburger { display:none; flex-direction:column; gap:6px; cursor:pointer; }
+        .hamburger span { display:block; width:26px; height:1px; background:var(--white); transition:.3s; }
+
+        /* ── HERO ── */
+        .hero { position:relative; height:100vh; min-height:680px; display:flex; overflow:hidden; }
+        .hero-left { flex:0 0 52%; position:relative; display:flex; align-items:center; }
+        .hero-bg { position:absolute; inset:0; background: radial-gradient(ellipse 70% 80% at 20% 60%, rgba(196,150,58,.07) 0%, transparent 60%), radial-gradient(ellipse 50% 50% at 90% 10%, rgba(196,150,58,.04) 0%, transparent 50%), linear-gradient(135deg, #060606 0%, #110E08 60%, #08080A 100%); }
+        .hero-pattern { position:absolute; inset:0; opacity:.025; background-image: repeating-linear-gradient(45deg, var(--gold) 0, var(--gold) 1px, transparent 1px, transparent 56px), repeating-linear-gradient(-45deg, var(--gold) 0, var(--gold) 1px, transparent 1px, transparent 56px); }
+        .hero-content { position:relative; z-index:2; padding:0 64px; max-width:840px; }
+        .hero-right { flex:1; position:relative; overflow:hidden; }
+        .hero-right img { width:100%; height:100%; object-fit:cover; object-position:center 15%; display:block; transition:transform 8s ease; }
+        .hero-right:hover img { transform:scale(1.04); }
+        .hero-right-veil { position:absolute; inset:0; background:linear-gradient(to right, var(--black) 0%, rgba(8,8,8,.55) 22%, transparent 55%); pointer-events:none; z-index:1; }
+        .eyebrow { display:flex; align-items:center; gap:20px; font-size:10px; letter-spacing:6px; text-transform:uppercase; color:var(--gold); margin-bottom:36px; }
+        .eyebrow::before { content:''; width:48px; height:1px; background:var(--gold); }
+        .hero-title { font-family:var(--font-serif); font-size:clamp(80px,12vw,160px); font-weight:300; line-height:.88; letter-spacing:-3px; margin-bottom:48px; }
+        .hero-title em { font-style:italic; color:var(--gold); }
+        .hero-sub { font-size:11px; letter-spacing:4px; text-transform:uppercase; color:var(--muted); line-height:2; margin-bottom:64px; }
+        .hero-actions { display:flex; gap:32px; align-items:center; }
+        .btn-gold { background:var(--gold); color:var(--black); padding:18px 52px; font-family:var(--font-sans); font-size:10px; letter-spacing:4px; text-transform:uppercase; font-weight:500; display:inline-block; transition:background .3s, transform .3s; }
+        .btn-gold:hover { background:var(--gold-light); transform:translateY(-2px); }
+        .btn-text { font-size:10px; letter-spacing:4px; text-transform:uppercase; color:var(--muted); display:inline-flex; align-items:center; gap:16px; transition:color .3s; }
+        .btn-text::after { content:'→'; transition:transform .3s; }
+        .btn-text:hover { color:var(--gold); }
+        .btn-text:hover::after { transform:translateX(8px); }
+        .hero-scroll { position:absolute; bottom:52px; right:64px; writing-mode:vertical-rl; font-size:9px; letter-spacing:5px; text-transform:uppercase; color:var(--muted); display:flex; align-items:center; gap:20px; }
+        .hero-scroll::after { content:''; width:1px; height:64px; background:linear-gradient(to bottom, var(--gold), transparent); }
+
+        /* ── TICKER ── */
+        .ticker { border-top:1px solid rgba(196,150,58,.15); border-bottom:1px solid rgba(196,150,58,.15); padding:18px 0; overflow:hidden; background:var(--dark); }
+        .ticker-track { display:flex; gap:72px; animation:ticker 22s linear infinite; white-space:nowrap; }
+        .ticker-item { display:flex; align-items:center; gap:72px; flex-shrink:0; font-size:11px; letter-spacing:4px; text-transform:uppercase; color:var(--muted); font-family:var(--font-serif); }
+        .ticker-item .dot { width:4px; height:4px; background:var(--gold); border-radius:50%; flex-shrink:0; }
+        @keyframes ticker { from{transform:translateX(0)} to{transform:translateX(-50%)} }
+
+        /* ── SECTIONS ── */
+        .section { padding:140px 64px; }
+        .label { display:flex; align-items:center; gap:16px; font-size:9px; letter-spacing:6px; text-transform:uppercase; color:var(--gold); margin-bottom:28px; }
+        .label::before { content:''; width:32px; height:1px; background:var(--gold); }
+        .heading { font-family:var(--font-serif); font-size:clamp(42px,5.5vw,80px); font-weight:300; line-height:1.05; letter-spacing:-1px; }
+        .heading em { font-style:italic; color:var(--gold); }
+
+        /* ── ABOUT ── */
+        .about { background:var(--dark); display:grid; grid-template-columns:1fr 1fr; gap:120px; align-items:center; }
+        .about-visual { position:relative; }
+        .about-main { aspect-ratio:3/4; background:#0D0D0D; position:relative; overflow:hidden; }
+        .about-main::after { content:''; position:absolute; inset:0; background:linear-gradient(to bottom, transparent 50%, rgba(8,8,8,.6) 100%); z-index:1; }
+        .about-main-img { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; object-position:center 20%; filter:brightness(.7) saturate(.8); }
+        .about-main-inner { display:none; }
+        .about-float { position:absolute; bottom:-48px; right:-48px; width:58%; aspect-ratio:1; background:var(--dark-mid); border:1px solid rgba(196,150,58,.25); display:flex; align-items:center; justify-content:center; flex-direction:column; gap:8px; padding:32px; text-align:center; overflow:hidden; }
+        .about-float-img { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; filter:brightness(.35) saturate(.7); transition:filter .6s ease; }
+        .about-float:hover .about-float-img { filter:brightness(.45) saturate(.85); }
+        .about-float-q, .about-float-l { position:relative; z-index:1; }
+        .about-float-q { font-family:var(--font-serif); font-style:italic; font-size:20px; color:var(--gold); line-height:1.5; }
+        .about-float-l { width:30px; height:1px; background:var(--gold); margin:4px auto 0; }
+        .about-letter { position:absolute; top:20px; right:-30px; font-family:var(--font-serif); font-size:180px; font-weight:300; color:rgba(196,150,58,.05); line-height:1; pointer-events:none; user-select:none; }
+        .about-body p { font-size:15px; color:var(--muted); line-height:1.95; margin-bottom:20px; }
+        .about-body p strong { color:var(--white); font-weight:400; }
+        .about-rule { width:56px; height:1px; background:var(--gold); margin:40px 0; }
+        .stats { display:grid; grid-template-columns:repeat(3,1fr); gap:24px; margin-top:48px; }
+        .stat { border-top:1px solid rgba(196,150,58,.2); padding-top:20px; }
+        .stat-n { font-family:var(--font-serif); font-size:44px; font-weight:300; color:var(--gold); line-height:1; }
+        .stat-l { font-size:9px; letter-spacing:3px; text-transform:uppercase; color:var(--muted); margin-top:8px; }
+
+        /* ── CRAFTS ── */
+        .crafts { background:var(--black); }
+        .crafts-head { display:grid; grid-template-columns:1fr 1fr; gap:80px; align-items:end; margin-bottom:80px; }
+        .crafts-intro { font-size:16px; color:var(--muted); line-height:1.9; max-width:420px; }
+        .crafts-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:2px; }
+        .craft { aspect-ratio:3/4; position:relative; overflow:hidden; cursor:pointer; }
+        .craft-bg { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; transition:transform .9s cubic-bezier(.25,.46,.45,.94); filter:brightness(.55) saturate(.8); }
+        .craft:hover .craft-bg { transform:scale(1.07); filter:brightness(.65) saturate(.9); }
+        .craft-shade { position:absolute; inset:0; background:linear-gradient(to top, rgba(0,0,0,.9) 0%, rgba(0,0,0,.1) 55%); }
+        .craft-glyph { position:absolute; top:50%; left:50%; transform:translate(-50%,-58%); font-size:52px; opacity:.1; transition:opacity .5s, transform .5s; }
+        .craft:hover .craft-glyph { opacity:.2; transform:translate(-50%,-64%); }
+        .craft-body { position:absolute; bottom:0; left:0; right:0; padding:40px 32px; transform:translateY(16px); transition:transform .4s ease; }
+        .craft:hover .craft-body { transform:translateY(0); }
+        .craft-n { font-size:9px; letter-spacing:3px; color:var(--gold); margin-bottom:12px; }
+        .craft-name { font-family:var(--font-serif); font-size:28px; font-weight:300; margin-bottom:12px; }
+        .craft-desc { font-size:13px; color:var(--muted); line-height:1.7; opacity:0; transition:opacity .4s .1s; }
+        .craft:hover .craft-desc { opacity:1; }
+
+
+        /* ── GALLERY ── */
+        .gallery { background:var(--dark); padding-bottom:0; }
+        .gallery-head { display:flex; justify-content:space-between; align-items:flex-end; margin-bottom:60px; }
+        .gallery-grid { display:grid; grid-template-columns:repeat(12,1fr); gap:3px; }
+        .gal-item { position:relative; overflow:hidden; cursor:pointer; }
+        .gal-item:nth-child(1) { grid-column:span 7; aspect-ratio:16/9; }
+        .gal-item:nth-child(2) { grid-column:span 5; aspect-ratio:5/6; }
+        .gal-item:nth-child(3) { grid-column:span 4; aspect-ratio:4/5; }
+        .gal-item:nth-child(4) { grid-column:span 4; aspect-ratio:4/5; }
+        .gal-item:nth-child(5) { grid-column:span 4; aspect-ratio:4/5; }
+        .gal-fill { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; transition:transform .8s cubic-bezier(.25,.46,.45,.94); filter:brightness(.75) saturate(.85); }
+        .gal-item:hover .gal-fill { transform:scale(1.06); filter:brightness(.85) saturate(.95); }
+        .gal-gloss { position:absolute; inset:0; background:rgba(0,0,0,0); transition:background .4s; }
+        .gal-item:hover .gal-gloss { background:rgba(196,150,58,.07); }
+        .gal-label { position:absolute; bottom:24px; left:24px; font-family:var(--font-serif); font-size:16px; font-style:italic; color:rgba(255,255,255,.5); opacity:0; transform:translateY(8px); transition:opacity .4s, transform .4s; }
+        .gal-item:hover .gal-label { opacity:1; transform:translateY(0); }
+
+        /* ── STATEMENT ── */
+        .statement { background:var(--black); text-align:center; padding:160px 64px; }
+        .statement .label { justify-content:center; }
+        .statement .label::before { display:none; }
+        .stmt-title { font-family:var(--font-serif); font-size:clamp(52px,7.5vw,112px); font-weight:300; line-height:1.0; letter-spacing:-2px; max-width:1000px; margin:0 auto 36px; }
+        .stmt-title em { font-style:italic; color:var(--gold); }
+        .stmt-sub { max-width:520px; margin:0 auto 72px; font-size:16px; color:var(--muted); line-height:1.85; }
+        .pillars { display:grid; grid-template-columns:repeat(4,1fr); gap:1px; background:rgba(196,150,58,.08); margin-top:100px; }
+        .pillar { background:var(--black); padding:64px 40px; text-align:left; transition:background .3s; }
+        .pillar:hover { background:var(--dark); }
+        .pillar-icon { font-size:30px; margin-bottom:28px; display:block; }
+        .pillar-t { font-family:var(--font-serif); font-size:22px; font-weight:400; margin-bottom:16px; }
+        .pillar-d { font-size:13px; color:var(--muted); line-height:1.85; }
+
+        /* ── TESTIMONIALS ── */
+        .testimonials { background:var(--dark); }
+        .test-head { display:flex; justify-content:space-between; align-items:flex-end; margin-bottom:72px; }
+        .test-score { text-align:right; }
+        .test-big { font-family:var(--font-serif); font-size:72px; font-weight:300; color:var(--gold); line-height:1; }
+        .test-stars { color:var(--gold); font-size:16px; letter-spacing:6px; }
+        .test-count { font-size:10px; letter-spacing:3px; text-transform:uppercase; color:var(--muted); margin-top:8px; }
+        .test-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:24px; }
+        .test-card { background:var(--dark-mid); border:1px solid rgba(196,150,58,.1); padding:52px 44px; transition:border-color .35s, transform .35s; }
+        .test-card:hover { border-color:rgba(196,150,58,.35); transform:translateY(-4px); }
+        .test-q { font-family:var(--font-serif); font-size:72px; color:var(--gold); opacity:.25; line-height:.4; margin-bottom:28px; }
+        .test-text { font-family:var(--font-serif); font-size:18px; font-style:italic; color:var(--off-white); line-height:1.75; margin-bottom:36px; }
+        .test-stars-sm { color:var(--gold); font-size:11px; letter-spacing:5px; margin-bottom:20px; }
+        .test-author { font-size:10px; letter-spacing:3px; text-transform:uppercase; color:var(--muted); }
+
+        /* ── VISIT ── */
+        .visit { display:grid; grid-template-columns:1fr 1fr; padding:0; }
+        .visit-info { background:var(--black); padding:140px 80px; }
+        .visit-map { position:relative; overflow:hidden; min-height:600px; }
+        .visit-map iframe { width:100%; height:100%; border:none; filter:grayscale(100%) invert(90%) contrast(85%) brightness(.85) sepia(15%); opacity:.65; }
+        .visit-map-veil { position:absolute; inset:0; background:linear-gradient(to right, var(--black) 0%, transparent 18%); pointer-events:none; }
+        .hours { margin-top:52px; }
+        .hour { display:flex; justify-content:space-between; align-items:center; padding:17px 0; border-bottom:1px solid rgba(255,255,255,.05); }
+        .hour:last-child { border-bottom:none; }
+        .h-day { font-size:10px; letter-spacing:2.5px; text-transform:uppercase; color:var(--muted); }
+        .h-time { font-family:var(--font-serif); font-size:18px; }
+        .h-time.closed { color:rgba(196,150,58,.45); font-style:italic; }
+        .visit-contacts { margin-top:56px; display:grid; gap:28px; }
+        .v-row { display:flex; gap:20px; }
+        .v-icon { color:var(--gold); font-size:16px; margin-top:2px; flex-shrink:0; }
+        .v-lbl { font-size:9px; letter-spacing:3px; text-transform:uppercase; color:var(--muted); margin-bottom:8px; }
+        .v-val { font-size:15px; }
+        .v-val a { transition:color .3s; }
+        .v-val a:hover { color:var(--gold); }
+
+        /* ── FOOTER ── */
+        footer { background:var(--dark); border-top:1px solid rgba(196,150,58,.12); padding:80px 64px 40px; }
+        .foot-top { display:grid; grid-template-columns:2fr 1fr 1fr 1fr; gap:56px; padding-bottom:64px; border-bottom:1px solid rgba(255,255,255,.05); }
+        .foot-brand { font-family:var(--font-serif); font-size:44px; font-weight:300; letter-spacing:5px; margin-bottom:20px; }
+        .foot-brand span { color:var(--gold); }
+        .foot-desc { font-size:13px; color:var(--muted); line-height:1.9; max-width:280px; }
+        .foot-col-h { font-size:9px; letter-spacing:4px; text-transform:uppercase; color:var(--gold); margin-bottom:24px; }
+        .foot-links { list-style:none; display:grid; gap:14px; }
+        .foot-links a { font-size:13px; color:var(--muted); transition:color .3s; }
+        .foot-links a:hover { color:var(--white); }
+        .foot-bottom { margin-top:36px; display:flex; justify-content:space-between; align-items:center; }
+        .foot-copy { font-size:11px; color:var(--muted); letter-spacing:1px; }
+        .socials { display:flex; gap:12px; }
+        .soc-btn { width:40px; height:40px; border:1px solid rgba(196,150,58,.2); display:flex; align-items:center; justify-content:center; font-size:14px; color:var(--muted); transition:border-color .3s, color .3s; }
+        .soc-btn:hover { border-color:var(--gold); color:var(--gold); }
+
+        /* ── ANIMATIONS ── */
+        .reveal { opacity:0; transform:translateY(36px); transition:opacity .9s ease, transform .9s cubic-bezier(0.16,1,0.3,1); }
+        .reveal.in { opacity:1; transform:translateY(0); }
+        .reveal[data-delay="1"] { transition-delay:.12s; }
+        .reveal[data-delay="2"] { transition-delay:.24s; }
+        .reveal[data-delay="3"] { transition-delay:.36s; }
+        .reveal[data-delay="4"] { transition-delay:.48s; }
+
+        /* ── SCROLL PROGRESS ── */
+        .scroll-bar { position:fixed; top:0; left:0; height:2px; background:linear-gradient(to right,var(--gold),var(--gold-light)); width:0%; z-index:9999; pointer-events:none; transition:width .08s linear; }
+
+        /* ── ANIMATED LABEL LINE ── */
+        .label::before { width:0; transition:width .9s cubic-bezier(0.16,1,0.3,1) .5s; }
+        .label.in::before { width:32px; }
+
+        /* ── ABOUT RULE DRAW ── */
+        .about-rule { width:0 !important; transition:width 1.1s cubic-bezier(0.16,1,0.3,1) .4s !important; }
+        .about-rule.in { width:56px !important; }
+
+        /* ── PILLAR HOVER SWEEP ── */
+        .pillar { position:relative; overflow:hidden; }
+        .pillar::after { content:''; position:absolute; top:0; left:-100%; width:100%; height:1px; background:linear-gradient(to right, transparent, var(--gold), transparent); transition:left .6s cubic-bezier(0.16,1,0.3,1); }
+        .pillar:hover::after { left:100%; }
+        .pillar-icon { transition:transform .4s cubic-bezier(0.16,1,0.3,1); display:block; }
+        .pillar:hover .pillar-icon { transform:translateY(-4px) scale(1.08); }
+
+        /* ── GALLERY LABEL ── */
+        .gal-label { transform:translateX(-10px); transition:opacity .4s ease, transform .5s cubic-bezier(0.16,1,0.3,1); }
+        .gal-item:hover .gal-label { opacity:1; transform:translateX(0); }
+
+        /* ── TESTIMONIAL QUOTE SETTLE ── */
+        .test-card .test-q { transform:translateY(-14px); transition:transform .8s cubic-bezier(0.16,1,0.3,1) .15s; }
+        .test-card.in .test-q { transform:translateY(0); }
+        .test-card { transition:border-color .35s, transform .35s cubic-bezier(0.16,1,0.3,1), box-shadow .35s ease; }
+        .test-card:hover { border-color:rgba(196,150,58,.35); transform:translateY(-4px); box-shadow:0 16px 48px rgba(196,150,58,.07); }
+
+        /* ── HOUR ROW ACCENT ── */
+        .hour { position:relative; transition:padding-left .3s cubic-bezier(0.16,1,0.3,1); }
+        .hour::before { content:''; position:absolute; left:0; top:50%; transform:translateY(-50%); width:2px; height:0; background:var(--gold); transition:height .3s cubic-bezier(0.16,1,0.3,1); opacity:.7; }
+        .hour:hover { padding-left:14px; }
+        .hour:hover::before { height:18px; }
+        .h-time { transition:color .3s ease; }
+        .hour:hover .h-time { color:var(--gold-light); }
+
+        /* ── MAGNETIC BUTTON ── */
+        .btn-gold { transition:background .3s, transform .25s cubic-bezier(0.16,1,0.3,1); will-change:transform; }
+
+        /* ── STAT NUMBERS ── */
+        .stat-n { transition:color .3s; }
+
+        /* ── NAV LINK UNDERLINE ── */
+        .nav-links a { position:relative; }
+        .nav-links a::after { content:''; position:absolute; bottom:-4px; left:0; width:0; height:1px; background:var(--gold); transition:width .4s cubic-bezier(0.16,1,0.3,1); }
+        .nav-links a:hover::after { width:100%; }
+
+        /* ── SECTION HEADING WORD STAGGER ── */
+        .heading .word { display:inline-block; transition:opacity .6s ease, transform .6s cubic-bezier(0.16,1,0.3,1); }
+
+        /* ── LANGUAGE TRANSITION ── */
+        [data-i18n], [data-i18n-html] { transition:opacity .25s ease; }
+        body.lang-switching [data-i18n],
+        body.lang-switching [data-i18n-html] { opacity:0; }
+
+        /* ── RESPONSIVE ── */
+        /* ── TABLET 1100 ── */
+        @media(max-width:1100px){
+            .about { grid-template-columns:1fr; gap:64px; }
+            .about-visual { max-width:560px; }
+            .about-letter { display:none; }
+            .crafts-head { grid-template-columns:1fr; gap:32px; }
+            .foot-top { grid-template-columns:1fr 1fr; }
+        }
+
+        /* ── TABLET 900 ── */
+        @media(max-width:900px){
+            .section { padding:100px 40px; }
+            nav, nav.scrolled { padding:16px 40px; }
+            .hero-scroll { right:40px; }
+            .pillars { grid-template-columns:1fr 1fr; }
+            .visit { grid-template-columns:1fr; }
+            .visit-map { min-height:400px; }
+            .visit-info { padding:80px 40px; }
+            /* Testimonials → horizontal carousel at tablet */
+            .test-grid { display:flex; overflow-x:auto; scroll-snap-type:x mandatory; gap:16px; margin:0 -40px; padding:0 40px 8px; }
+            .test-card { flex:0 0 72vw; scroll-snap-align:start; display:block !important; }
+            .test-grid::-webkit-scrollbar { display:none; }
+        }
+
+        /* ── MOBILE MENU ── */
+        .nav-open .nav-links {
+            display:flex !important; flex-direction:column;
+            position:fixed; inset:0;
+            background:rgba(8,8,8,.97); backdrop-filter:blur(24px);
+            align-items:center; justify-content:center;
+            gap:40px; z-index:800; padding-bottom:100px;
+        }
+        .nav-open .nav-links a { font-size:18px; letter-spacing:5px; }
+        .nav-open .lang-switcher {
+            display:flex !important;
+            position:fixed; bottom:52px; left:50%; transform:translateX(-50%);
+            z-index:801;
+        }
+
+        /* ── MOBILE 768 ── */
+        @media(max-width:768px){
+
+            /* ─ BASE ─ */
+            .section { padding:64px 20px; }
+            nav, nav.scrolled { padding:12px 20px; }
+            .nav-links { display:none !important; }
+            .hamburger { display:flex; }
+            .lang-switcher { display:none; }
+            .hero-scroll { display:none; }
+
+            /* ─ NAV LOGO: tighter on small screens ─ */
+            .nav-logo { font-size:20px; letter-spacing:3px; }
+
+            /* ─ TICKER: tighter gaps, less tracking ─ */
+            .ticker-track { gap:36px; }
+            .ticker-item { gap:36px; font-size:10px; letter-spacing:2px; }
+
+            /* ─ HERO: full-bleed image, text at bottom ─ */
+            .hero { display:block; height:100svh; min-height:580px; position:relative; }
+            .hero-left {
+                position:absolute; bottom:0; left:0; right:0; flex:none;
+                display:block; padding:0 20px 56px;
+                background:linear-gradient(to top,
+                    rgba(8,8,8,1) 0%, rgba(8,8,8,.92) 28%,
+                    rgba(8,8,8,.35) 65%, transparent 100%);
+                z-index:3;
+            }
+            .hero-bg, .hero-pattern { display:none; }
+            .hero-right { position:absolute; inset:0; flex:none; }
+            .hero-right-veil {
+                background:linear-gradient(to top,
+                    var(--black) 0%, rgba(8,8,8,.45) 32%, transparent 62%);
+            }
+            .hero-content { padding:0; max-width:100%; position:static; }
+            /* HIDE: decorative gold line before eyebrow on mobile */
+            .eyebrow::before { display:none; }
+            .eyebrow { font-size:8px; letter-spacing:3px; margin-bottom:16px; gap:0; }
+            .hero-title { font-size:clamp(48px,13vw,72px); letter-spacing:-2px; margin-bottom:16px; }
+            .hero-sub { font-size:8px; letter-spacing:2px; line-height:1.8; margin-bottom:28px; }
+            /* HIDE: ghost "Our Story" button — one CTA is enough on mobile */
+            .btn-text { display:none; }
+            .hero-actions { flex-direction:column; align-items:flex-start; gap:0; }
+            .btn-gold { padding:14px 32px; font-size:9px; letter-spacing:3px; }
+
+            /* ─ ABOUT ─ */
+            .about { gap:40px; }
+            .about-visual { max-width:100%; }
+            .about-main { aspect-ratio:4/3; }
+            .about-float { display:none; }
+            .about-rule { margin:20px 0 !important; }
+            .about-body p { font-size:13px; line-height:1.85; margin-bottom:14px; }
+            .stats { gap:14px; margin-top:32px; }
+            .stat-n { font-size:30px; }
+            .stat-l { font-size:8px; letter-spacing:2px; margin-top:4px; }
+
+            /* ─ CRAFTS ─ */
+            .crafts-head { margin-bottom:40px; gap:16px; }
+            /* HIDE: intro paragraph under heading — carousel is self-explanatory */
+            .crafts-intro { display:none; }
+            .crafts-grid {
+                display:flex !important;
+                overflow-x:auto; scroll-snap-type:x mandatory;
+                gap:8px; margin:0 -20px; padding:0 20px 4px;
+            }
+            .craft {
+                flex:0 0 76vw !important; width:76vw !important;
+                scroll-snap-align:start; display:block !important;
+                aspect-ratio:3/4;
+            }
+            .crafts-grid::-webkit-scrollbar { display:none; }
+            .crafts-scroll-hint {
+                display:flex; align-items:center; gap:8px; margin-top:14px;
+                font-size:8px; letter-spacing:3px; text-transform:uppercase; color:var(--muted);
+            }
+            .crafts-scroll-hint::before { content:''; display:block; width:16px; height:1px; background:var(--gold); }
+            /* Craft body always visible on mobile (no hover) */
+            .craft-body { transform:translateY(0); }
+            .craft-desc { opacity:1; }
+
+            /* ─ GALLERY ─ */
+            .gallery-head { flex-direction:column; align-items:flex-start; gap:16px; margin-bottom:36px; }
+            .gallery-grid { grid-template-columns:1fr 1fr; gap:3px; }
+            .gal-item { grid-column:span 1 !important; aspect-ratio:1 !important; }
+            .gal-item:nth-child(1) { grid-column:span 2 !important; aspect-ratio:16/9 !important; }
+            /* HIDE: hover labels don't fire on touch */
+            .gal-label { display:none; }
+
+            /* ─ STATEMENT ─ */
+            .statement { padding:72px 20px; }
+            .stmt-title { font-size:clamp(34px,10vw,52px); letter-spacing:-1px; margin-bottom:20px; }
+            .stmt-sub { font-size:13px; max-width:100%; margin-bottom:40px; }
+            .pillars { grid-template-columns:1fr; margin-top:48px; }
+            .pillar { padding:32px 20px; }
+            .pillar-icon { font-size:24px; margin-bottom:16px; }
+            .pillar-t { font-size:17px; margin-bottom:10px; }
+            .pillar-d { font-size:12px; line-height:1.75; }
+
+            /* ─ TESTIMONIALS ─ */
+            .test-head { flex-direction:column; align-items:flex-start; gap:16px; margin-bottom:36px; }
+            .test-big { font-size:40px; }
+            .test-stars { font-size:13px; letter-spacing:3px; }
+            .test-count { font-size:9px; }
+            .test-grid {
+                display:flex !important;
+                overflow-x:auto; scroll-snap-type:x mandatory;
+                gap:10px; margin:0 -20px; padding:0 20px 8px;
+            }
+            .test-card {
+                flex:0 0 84vw; scroll-snap-align:start;
+                display:block !important; padding:28px 24px;
+            }
+            .test-grid::-webkit-scrollbar { display:none; }
+            .test-q { font-size:44px; margin-bottom:16px; }
+            .test-text { font-size:15px; line-height:1.65; margin-bottom:24px; }
+            .test-author { font-size:9px; letter-spacing:2px; }
+
+            /* ─ VISIT ─ */
+            .visit-info { padding:64px 20px; }
+            .hours { margin-top:28px; }
+            .hour { padding:13px 0; }
+            .h-time { font-size:15px; }
+            .h-day { font-size:9px; letter-spacing:2px; }
+            .visit-contacts { margin-top:32px; gap:20px; }
+            .v-val { font-size:13px; }
+            /* HIDE: map iframe on mobile — too heavy, not useful */
+            .visit-map { display:none; }
+            /* Visit now full width */
+            .visit { grid-template-columns:1fr; }
+
+            /* ─ FOOTER ─ */
+            footer { padding:48px 20px 28px; }
+            .foot-top { grid-template-columns:1fr 1fr; gap:32px; padding-bottom:36px; }
+            .foot-brand { font-size:30px; letter-spacing:3px; margin-bottom:12px; }
+            .foot-desc { font-size:12px; max-width:100%; }
+            /* HIDE: secondary footer nav columns, keep only brand + navigate */
+            .foot-top > div:nth-child(3),
+            .foot-top > div:nth-child(4) { display:none; }
+            .foot-col-h { font-size:8px; margin-bottom:16px; }
+            .foot-links a { font-size:12px; }
+            .foot-links { gap:10px; }
+            .foot-bottom { flex-direction:column; gap:12px; text-align:center; }
+            .foot-copy { font-size:10px; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-follower" id="follower"></div>
+
+<!-- ══ NAV ══ -->
+<nav id="nav">
+    <a href="#" class="nav-logo">Ø<span>s</span>tröm</a>
+
+    <div class="nav-right">
+        <ul class="nav-links" id="navlinks">
+            <li><a href="#about"        data-i18n="nav.about">About</a></li>
+            <li><a href="#crafts"       data-i18n="nav.crafts">Crafts</a></li>
+            <li><a href="#gallery"      data-i18n="nav.gallery">Gallery</a></li>
+            <li><a href="#testimonials" data-i18n="nav.reviews">Reviews</a></li>
+            <li><a href="#visit" class="nav-cta" data-i18n="nav.visit">Visit Us</a></li>
+        </ul>
+
+        <div class="lang-switcher">
+            <button class="lang-opt active" data-lang="en" id="btn-en">EN</button>
+            <div class="lang-divider"></div>
+            <button class="lang-opt"        data-lang="fo" id="btn-fo">FO</button>
+        </div>
+    </div>
+
+    <div class="hamburger" id="burger">
+        <span></span><span></span><span></span>
+    </div>
+</nav>
+
+<!-- ══ HERO ══ -->
+<section class="hero" id="home">
+    <div class="hero-left">
+        <div class="hero-bg"></div>
+        <div class="hero-pattern"></div>
+        <div class="hero-content">
+            <div class="eyebrow" data-i18n="hero.eyebrow">Tórshavn · Faroe Islands · Est. Skálatrøð 18</div>
+            <h1 class="hero-title">Østr<em>öm</em></h1>
+            <p class="hero-sub" data-i18n-html="hero.sub">Artistic Handicrafts<br>of the North Atlantic</p>
+            <div class="hero-actions">
+                <a href="#gallery" class="btn-gold" data-i18n="hero.cta1">Explore Collection</a>
+                <a href="#about"   class="btn-text" data-i18n="hero.cta2">Our Story</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="hero-right">
+        <img src="images/campaign.jpg" alt="Østrom — Faroe Islands Collection" />
+        <div class="hero-right-veil"></div>
+    </div>
+
+    <div class="hero-scroll" data-i18n="hero.scroll">Scroll to Discover</div>
+</section>
+
+<!-- ══ TICKER ══ -->
+<div class="ticker">
+    <div class="ticker-track">
+        <div class="ticker-item" id="tick1">Handcrafted <span class="dot"></span> Artistic <span class="dot"></span> Authentic Faroese <span class="dot"></span> Timeless <span class="dot"></span> Tórshavn <span class="dot"></span> 18 Skálatrøð <span class="dot"></span> Handcrafted <span class="dot"></span> Artistic <span class="dot"></span> Authentic Faroese <span class="dot"></span> Timeless <span class="dot"></span> Tórshavn <span class="dot"></span> 18 Skálatrøð <span class="dot"></span></div>
+        <div class="ticker-item" id="tick2" aria-hidden="true">Handcrafted <span class="dot"></span> Artistic <span class="dot"></span> Authentic Faroese <span class="dot"></span> Timeless <span class="dot"></span> Tórshavn <span class="dot"></span> 18 Skálatrøð <span class="dot"></span> Handcrafted <span class="dot"></span> Artistic <span class="dot"></span> Authentic Faroese <span class="dot"></span> Timeless <span class="dot"></span> Tórshavn <span class="dot"></span> 18 Skálatrøð <span class="dot"></span></div>
+    </div>
+</div>
+
+<!-- ══ ABOUT ══ -->
+<section class="about section" id="about">
+    <div class="about-visual">
+        <div class="about-letter">Ø</div>
+        <div class="about-main">
+            <img class="about-main-img"
+                 src="https://images.unsplash.com/photo-1519181245277-cffeb31da948?auto=format&fit=crop&w=800&q=80"
+                 alt="Traditional Faroese weaving and craft"
+                 loading="lazy"
+                 onerror="this.src='https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&w=800&q=80'">
+        </div>
+        <div class="about-float">
+            <img class="about-float-img"
+                 src="https://images.unsplash.com/photo-1513364776144-60967b0f800f?auto=format&fit=crop&w=500&q=80"
+                 alt="Artisan hands crafting"
+                 loading="lazy"
+                 onerror="this.src='https://images.unsplash.com/photo-1605289982774-9a6fef564df8?auto=format&fit=crop&w=500&q=80'">
+            <div class="about-float-q" data-i18n-html="about.quote">"Crafted<br>with soul"</div>
+            <div class="about-float-l"></div>
+        </div>
+    </div>
+
+    <div class="about-body">
+        <div class="label reveal" data-i18n="about.label">Our Heritage</div>
+        <h2 class="heading reveal" data-delay="1" data-i18n-html="about.heading">Where the<br>Atlantic<br><em>meets artistry</em></h2>
+        <div class="about-rule reveal" data-delay="2"></div>
+        <p class="reveal" data-delay="2" data-i18n-html="about.p1">Nestled in the heart of <strong>Tórshavn</strong> — the world's smallest capital — Østrom is a sanctuary of Faroese artistic heritage. We curate and create handicrafts that carry the soul of these dramatic islands, from wind-swept cliffs to the deep northern sea.</p>
+        <p class="reveal" data-delay="3" data-i18n-html="about.p2">Each piece in our collection is <strong>handcrafted with intention</strong>, celebrating traditions while embracing a contemporary sensibility that speaks to collectors and connoisseurs worldwide. When you hold a piece from Østrom, you hold the Faroe Islands themselves.</p>
+        <div class="stats">
+            <div class="stat reveal" data-delay="2">
+                <div class="stat-n">4.5★</div>
+                <div class="stat-l" data-i18n="stat1.label">Customer Rating</div>
+            </div>
+            <div class="stat reveal" data-delay="3">
+                <div class="stat-n">44+</div>
+                <div class="stat-l" data-i18n="stat2.label">Verified Reviews</div>
+            </div>
+            <div class="stat reveal" data-delay="4">
+                <div class="stat-n">∞</div>
+                <div class="stat-l" data-i18n="stat3.label">Stories Told</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ══ CRAFTS ══ -->
+<section class="crafts section" id="crafts">
+    <div class="crafts-head">
+        <div>
+            <div class="label reveal" data-i18n="crafts.label">Our Craft</div>
+            <h2 class="heading reveal" data-delay="1" data-i18n-html="crafts.heading">Art born<br>from <em>nature</em></h2>
+        </div>
+        <p class="crafts-intro reveal" data-delay="2" data-i18n="crafts.intro">Every piece is a conversation between the artist and the raw, untamed Faroese landscape — where tradition shapes every stitch, every curve, every form.</p>
+    </div>
+
+    <div class="crafts-grid" id="craftsGrid">
+        <div class="craft reveal" data-delay="1">
+            <img class="craft-bg" src="https://images.unsplash.com/photo-1605289982774-9a6fef564df8?auto=format&fit=crop&w=700&q=80" alt="Faroese weaving and textile craft" loading="lazy">
+            <div class="craft-shade"></div>
+            <div class="craft-glyph">🧶</div>
+            <div class="craft-body">
+                <div class="craft-n"    data-i18n="craft1.num">01 · Textile</div>
+                <h3 class="craft-name" data-i18n="craft1.name">Weaving &amp; Textile</h3>
+                <p class="craft-desc"  data-i18n="craft1.desc">Nordic patterns woven into contemporary forms. Each thread carries generations of Faroese craftsmanship passed through hands and time.</p>
+            </div>
+        </div>
+        <div class="craft reveal" data-delay="2">
+            <img class="craft-bg" src="https://images.unsplash.com/photo-1460661419201-fd4cecdf8a8b?auto=format&fit=crop&w=700&q=80" alt="Faroese fine art and painting" loading="lazy">
+            <div class="craft-shade"></div>
+            <div class="craft-glyph">🎨</div>
+            <div class="craft-body">
+                <div class="craft-n"    data-i18n="craft2.num">02 · Fine Art</div>
+                <h3 class="craft-name" data-i18n="craft2.name">Painting &amp; Fine Art</h3>
+                <p class="craft-desc"  data-i18n="craft2.desc">Original works capturing dramatic Faroese light, shadow, and the endless Atlantic horizon — for those who collect the extraordinary.</p>
+            </div>
+        </div>
+        <div class="craft reveal" data-delay="3">
+            <img class="craft-bg" src="https://images.unsplash.com/photo-1618220179428-22790b461013?auto=format&fit=crop&w=700&q=80" alt="Sculptural works in stone and driftwood" loading="lazy">
+            <div class="craft-shade"></div>
+            <div class="craft-glyph">🏺</div>
+            <div class="craft-body">
+                <div class="craft-n"    data-i18n="craft3.num">03 · Sculpture</div>
+                <h3 class="craft-name" data-i18n="craft3.name">Sculptural Works</h3>
+                <p class="craft-desc"  data-i18n="craft3.desc">Three-dimensional forms shaped from local stone, driftwood, and bone — weathered by the North Atlantic into pieces of timeless beauty.</p>
+            </div>
+        </div>
+    </div>
+    <p class="crafts-scroll-hint" id="craftsHint">Swipe to explore</p>
+</section>
+
+<!-- ══ GALLERY ══ -->
+<section class="gallery section" id="gallery">
+    <div class="gallery-head">
+        <div>
+            <div class="label reveal"                  data-i18n="gallery.label">The Collection</div>
+            <h2 class="heading reveal" data-delay="1"  data-i18n-html="gallery.heading">A glimpse into<br><em>the atelier</em></h2>
+        </div>
+        <a href="#visit" class="btn-text reveal" data-delay="2" data-i18n="gallery.cta">Visit in Person</a>
+    </div>
+    <div class="gallery-grid">
+        <div class="gal-item">
+            <img class="gal-fill" src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&w=1200&q=80" alt="Atlantic light over dramatic Faroe Islands cliffs" loading="lazy">
+            <div class="gal-gloss"></div><span class="gal-label" data-i18n="gal1.label">Atlantic Light</span>
+        </div>
+        <div class="gal-item">
+            <img class="gal-fill" src="https://images.unsplash.com/photo-1505118380757-91f5f5632de0?auto=format&fit=crop&w=900&q=80" alt="North Atlantic ocean waves" loading="lazy">
+            <div class="gal-gloss"></div><span class="gal-label" data-i18n="gal2.label">North Sea</span>
+        </div>
+        <div class="gal-item">
+            <img class="gal-fill" src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?auto=format&fit=crop&w=800&q=80" alt="Close-up of woven Nordic textile thread" loading="lazy">
+            <div class="gal-gloss"></div><span class="gal-label" data-i18n="gal3.label">Woven Thread</span>
+        </div>
+        <div class="gal-item">
+            <img class="gal-fill" src="https://images.unsplash.com/photo-1539635278303-d4002c07eae3?auto=format&fit=crop&w=800&q=80" alt="Rocky Faroese stone landscape" loading="lazy">
+            <div class="gal-gloss"></div><span class="gal-label" data-i18n="gal4.label">Faroe Stone</span>
+        </div>
+        <div class="gal-item">
+            <img class="gal-fill" src="https://images.unsplash.com/photo-1531366936337-7c912a4589a7?auto=format&fit=crop&w=800&q=80" alt="Midnight sun golden hour over the North Atlantic" loading="lazy">
+            <div class="gal-gloss"></div><span class="gal-label" data-i18n="gal5.label">Midnight Sun</span>
+        </div>
+    </div>
+</section>
+
+<!-- ══ STATEMENT ══ -->
+<section class="statement">
+    <div class="label reveal"                       data-i18n="stmt.label">Why Østrom</div>
+    <h2 class="stmt-title reveal" data-delay="1"    data-i18n-html="stmt.heading">More than a shop.<br>An <em>experience.</em></h2>
+    <p class="stmt-sub reveal" data-delay="2"       data-i18n="stmt.sub">Step through our doors on Skálatrøð and enter a world where art, culture, and craft converge — curated with meticulous care for those who appreciate the truly extraordinary.</p>
+    <a href="#visit" class="btn-gold reveal" data-delay="3" data-i18n="stmt.cta">Plan Your Visit</a>
+    <div class="pillars">
+        <div class="pillar reveal">
+            <span class="pillar-icon">🧭</span>
+            <h3 class="pillar-t" data-i18n="p1.title">Locally Rooted</h3>
+            <p class="pillar-d"  data-i18n="p1.desc">Every item is sourced from or deeply inspired by the Faroe Islands — a genuine cultural treasure, not a souvenir shop.</p>
+        </div>
+        <div class="pillar reveal" data-delay="1">
+            <span class="pillar-icon">✦</span>
+            <h3 class="pillar-t" data-i18n="p2.title">Curated Quality</h3>
+            <p class="pillar-d"  data-i18n="p2.desc">We select only pieces of exceptional craftsmanship — works that will be cherished and passed down for generations.</p>
+        </div>
+        <div class="pillar reveal" data-delay="2">
+            <span class="pillar-icon">🌊</span>
+            <h3 class="pillar-t" data-i18n="p3.title">Island Stories</h3>
+            <p class="pillar-d"  data-i18n="p3.desc">Each piece carries the narrative of these islands — dramatic, serene, and endlessly fascinating to those who know to look.</p>
+        </div>
+        <div class="pillar reveal" data-delay="3">
+            <span class="pillar-icon">🎁</span>
+            <h3 class="pillar-t" data-i18n="p4.title">Gift Worthy</h3>
+            <p class="pillar-d"  data-i18n="p4.desc">The perfect keepsake for the discerning traveller, or a gift that says Faroe Islands like nothing else ever could.</p>
+        </div>
+    </div>
+</section>
+
+<!-- ══ TESTIMONIALS ══ -->
+<section class="testimonials section" id="testimonials">
+    <div class="test-head">
+        <div>
+            <div class="label reveal"                  data-i18n="test.label">Reviews</div>
+            <h2 class="heading reveal" data-delay="1"  data-i18n-html="test.heading">What visitors<br><em>are saying</em></h2>
+        </div>
+        <div class="test-score reveal">
+            <div class="test-big">4.5</div>
+            <div class="test-stars">★★★★<span style="opacity:.45">★</span></div>
+            <div class="test-count" data-i18n="test.count">44 Google Reviews</div>
+        </div>
+    </div>
+    <div class="test-grid">
+        <div class="test-card reveal" data-delay="1">
+            <div class="test-q">"</div>
+            <p class="test-text"   data-i18n="test1.text">An absolute gem in Tórshavn. The craftsmanship is extraordinary — every piece tells the story of these remarkable islands. I walked out with something I'll treasure forever.</p>
+            <div class="test-stars-sm">★★★★★</div>
+            <div class="test-author" data-i18n="test1.author">Visitor from Copenhagen</div>
+        </div>
+        <div class="test-card reveal" data-delay="2">
+            <div class="test-q">"</div>
+            <p class="test-text"   data-i18n="test2.text">I left with the most beautiful piece of art from this incredible shop. The staff were knowledgeable and genuinely passionate about each item. A must-visit in Tórshavn.</p>
+            <div class="test-stars-sm">★★★★★</div>
+            <div class="test-author" data-i18n="test2.author">Tourist from London, UK</div>
+        </div>
+        <div class="test-card reveal" data-delay="3">
+            <div class="test-q">"</div>
+            <p class="test-text"   data-i18n="test3.text">This is where you come when you want something truly unique from the Faroe Islands. Not a tourist trap — genuine art and craft of the highest order. Worth every króna.</p>
+            <div class="test-stars-sm">★★★★★</div>
+            <div class="test-author" data-i18n="test3.author">Traveller from New York</div>
+        </div>
+    </div>
+</section>
+
+<!-- ══ VISIT ══ -->
+<div class="visit" id="visit">
+    <div class="visit-info section">
+        <div class="label reveal"                  data-i18n="visit.label">Come See Us</div>
+        <h2 class="heading reveal" data-delay="1"  data-i18n-html="visit.heading">Come<br><em>visit</em><br>us</h2>
+        <div class="hours reveal" data-delay="2">
+            <div class="hour"><span class="h-day" data-i18n="day.monThu">Monday – Thursday</span><span class="h-time">10:00 – 17:30</span></div>
+            <div class="hour"><span class="h-day" data-i18n="day.fri">Friday</span><span class="h-time">10:00 – 18:00</span></div>
+            <div class="hour"><span class="h-day" data-i18n="day.sat">Saturday</span><span class="h-time">10:00 – 16:00</span></div>
+            <div class="hour"><span class="h-day" data-i18n="day.sun">Sunday</span><span class="h-time closed" data-i18n="closed">Closed</span></div>
+        </div>
+        <div class="visit-contacts reveal" data-delay="3">
+            <div class="v-row">
+                <span class="v-icon">📍</span>
+                <div>
+                    <div class="v-lbl" data-i18n="contact.addr.label">Address</div>
+                    <div class="v-val" data-i18n-html="contact.addr.val">18 Skálatrøð<br>Tórshavn 100, Faroe Islands</div>
+                </div>
+            </div>
+            <div class="v-row">
+                <span class="v-icon">📞</span>
+                <div>
+                    <div class="v-lbl" data-i18n="contact.tel.label">Telephone</div>
+                    <div class="v-val"><a href="tel:+298312222">+298 312 222</a></div>
+                </div>
+            </div>
+            <div class="v-row">
+                <span class="v-icon">🌐</span>
+                <div>
+                    <div class="v-lbl" data-i18n="contact.social.label">Follow Us</div>
+                    <div class="v-val"><a href="https://facebook.com" target="_blank" rel="noopener">facebook.com</a></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="visit-map">
+        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1028.8!2d-6.769!3d62.0107!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x48d2f99c5bfffe61%3A0x65c59fdcbcd78f38!2s%C3%98strom!5e0!3m2!1sen!2sfo!4v1" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="Østrom location"></iframe>
+        <div class="visit-map-veil"></div>
+    </div>
+</div>
+
+<!-- ══ FOOTER ══ -->
+<footer>
+    <div class="foot-top">
+        <div>
+            <div class="foot-brand">Ø<span>s</span>tröm</div>
+            <p class="foot-desc" data-i18n="foot.desc">Artistic handicrafts from the heart of Tórshavn — where the North Atlantic shapes beauty, and tradition meets artistry.</p>
+        </div>
+        <div>
+            <div class="foot-col-h" data-i18n="foot.nav">Navigate</div>
+            <ul class="foot-links">
+                <li><a href="#home"         data-i18n="foot.home">Home</a></li>
+                <li><a href="#about"        data-i18n="foot.about">About</a></li>
+                <li><a href="#crafts"       data-i18n="foot.crafts">Our Crafts</a></li>
+                <li><a href="#gallery"      data-i18n="foot.gallery">Gallery</a></li>
+                <li><a href="#testimonials" data-i18n="foot.reviews">Reviews</a></li>
+            </ul>
+        </div>
+        <div>
+            <div class="foot-col-h" data-i18n="foot.col.visit">Visit</div>
+            <ul class="foot-links">
+                <li><a href="#visit" data-i18n="foot.hours">Opening Hours</a></li>
+                <li><a href="#visit" data-i18n="foot.directions">Directions</a></li>
+                <li><a href="tel:+298312222">+298 312 222</a></li>
+                <li><a href="mailto:info@ostrom.fo" data-i18n="foot.contact">Contact Us</a></li>
+            </ul>
+        </div>
+        <div>
+            <div class="foot-col-h" data-i18n="foot.connect">Connect</div>
+            <ul class="foot-links">
+                <li><a href="https://facebook.com" target="_blank" rel="noopener">Facebook</a></li>
+                <li><a href="https://www.google.com/maps/search/ostrom+torshavn" target="_blank" rel="noopener">Google Maps</a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="foot-bottom">
+        <p class="foot-copy" data-i18n="foot.copy">© 2025 Østrom · 18 Skálatrøð · Tórshavn 100 · Faroe Islands</p>
+        <div class="socials">
+            <a href="https://facebook.com" class="soc-btn" target="_blank" rel="noopener" aria-label="Facebook">f</a>
+            <a href="https://www.google.com/maps/search/ostrom+torshavn" class="soc-btn" target="_blank" rel="noopener" aria-label="Maps">g</a>
+        </div>
+    </div>
+</footer>
+
+<script>
+/* ── TRANSLATIONS ── */
+const t = {
+  en: {
+    'nav.about':'About','nav.crafts':'Crafts','nav.gallery':'Gallery','nav.reviews':'Reviews','nav.visit':'Visit Us',
+    'hero.eyebrow':'Tórshavn · Faroe Islands · Est. Skálatrøð 18',
+    'hero.sub':'Artistic Handicrafts<br>of the North Atlantic',
+    'hero.cta1':'Explore Collection','hero.cta2':'Our Story','hero.scroll':'Scroll to Discover',
+    'about.label':'Our Heritage',
+    'about.heading':'Where the<br>Atlantic<br><em>meets artistry</em>',
+    'about.quote':'"Crafted<br>with soul"',
+    'about.p1':'Nestled in the heart of <strong>Tórshavn</strong> — the world\'s smallest capital — Østrom is a sanctuary of Faroese artistic heritage. We curate and create handicrafts that carry the soul of these dramatic islands, from wind-swept cliffs to the deep northern sea.',
+    'about.p2':'Each piece in our collection is <strong>handcrafted with intention</strong>, celebrating traditions while embracing a contemporary sensibility that speaks to collectors and connoisseurs worldwide. When you hold a piece from Østrom, you hold the Faroe Islands themselves.',
+    'stat1.label':'Customer Rating','stat2.label':'Verified Reviews','stat3.label':'Stories Told',
+    'crafts.label':'Our Craft',
+    'crafts.heading':'Art born<br>from <em>nature</em>',
+    'crafts.intro':'Every piece is a conversation between the artist and the raw, untamed Faroese landscape — where tradition shapes every stitch, every curve, every form.',
+    'craft1.num':'01 · Textile','craft1.name':'Weaving & Textile','craft1.desc':'Nordic patterns woven into contemporary forms. Each thread carries generations of Faroese craftsmanship passed through hands and time.',
+    'craft2.num':'02 · Fine Art','craft2.name':'Painting & Fine Art','craft2.desc':'Original works capturing dramatic Faroese light, shadow, and the endless Atlantic horizon — for those who collect the extraordinary.',
+    'craft3.num':'03 · Sculpture','craft3.name':'Sculptural Works','craft3.desc':'Three-dimensional forms shaped from local stone, driftwood, and bone — weathered by the North Atlantic into pieces of timeless beauty.',
+    'ts.label':'Featured Collection',
+    'ts.heading':'Top <em>Sellers</em>',
+    'ts.desc':'Our most beloved pieces — handcrafted knitwear, woven textiles, and outerwear shaped by the Faroese climate and worn by those who seek the extraordinary.',
+    'ts.tag1':'Knitwear','ts.tag2':'Outerwear','ts.tag3':'Woven Textiles','ts.tag4':'Accessories','ts.tag5':'New Arrivals',
+    'ts.cat.label':'Collection','ts.women':'Women\'s','ts.men':'Men\'s',
+    'gallery.label':'The Collection',
+    'gallery.heading':'A glimpse into<br><em>the atelier</em>',
+    'gallery.cta':'Visit in Person',
+    'gal1.label':'Atlantic Light','gal2.label':'North Sea','gal3.label':'Woven Thread','gal4.label':'Faroe Stone','gal5.label':'Midnight Sun',
+    'stmt.label':'Why Østrom',
+    'stmt.heading':'More than a shop.<br>An <em>experience.</em>',
+    'stmt.sub':'Step through our doors on Skálatrøð and enter a world where art, culture, and craft converge — curated with meticulous care for those who appreciate the truly extraordinary.',
+    'stmt.cta':'Plan Your Visit',
+    'p1.title':'Locally Rooted','p1.desc':'Every item is sourced from or deeply inspired by the Faroe Islands — a genuine cultural treasure, not a souvenir shop.',
+    'p2.title':'Curated Quality','p2.desc':'We select only pieces of exceptional craftsmanship — works that will be cherished and passed down for generations.',
+    'p3.title':'Island Stories','p3.desc':'Each piece carries the narrative of these islands — dramatic, serene, and endlessly fascinating to those who know to look.',
+    'p4.title':'Gift Worthy','p4.desc':'The perfect keepsake for the discerning traveller, or a gift that says Faroe Islands like nothing else ever could.',
+    'test.label':'Reviews',
+    'test.heading':'What visitors<br><em>are saying</em>',
+    'test.count':'44 Google Reviews',
+    'test1.text':'An absolute gem in Tórshavn. The craftsmanship is extraordinary — every piece tells the story of these remarkable islands. I walked out with something I\'ll treasure forever.',
+    'test1.author':'Visitor from Copenhagen',
+    'test2.text':'I left with the most beautiful piece of art from this incredible shop. The staff were knowledgeable and genuinely passionate about each item. A must-visit in Tórshavn.',
+    'test2.author':'Tourist from London, UK',
+    'test3.text':'This is where you come when you want something truly unique from the Faroe Islands. Not a tourist trap — genuine art and craft of the highest order. Worth every króna.',
+    'test3.author':'Traveller from New York',
+    'visit.label':'Come See Us',
+    'visit.heading':'Come<br><em>visit</em><br>us',
+    'day.monThu':'Monday – Thursday','day.fri':'Friday','day.sat':'Saturday','day.sun':'Sunday','closed':'Closed',
+    'contact.addr.label':'Address','contact.addr.val':'18 Skálatrøð<br>Tórshavn 100, Faroe Islands',
+    'contact.tel.label':'Telephone','contact.social.label':'Follow Us',
+    'foot.desc':'Artistic handicrafts from the heart of Tórshavn — where the North Atlantic shapes beauty, and tradition meets artistry.',
+    'foot.nav':'Navigate','foot.col.visit':'Visit','foot.connect':'Connect',
+    'foot.home':'Home','foot.about':'About','foot.crafts':'Our Crafts','foot.gallery':'Gallery','foot.reviews':'Reviews',
+    'foot.hours':'Opening Hours','foot.directions':'Directions','foot.contact':'Contact Us',
+    'foot.copy':'© 2025 Østrom · 18 Skálatrøð · Tórshavn 100 · Faroe Islands',
+    'ticker':'Handcrafted <span class="dot"></span> Artistic <span class="dot"></span> Authentic Faroese <span class="dot"></span> Timeless <span class="dot"></span> Tórshavn <span class="dot"></span> 18 Skálatrøð <span class="dot"></span> Handcrafted <span class="dot"></span> Artistic <span class="dot"></span> Authentic Faroese <span class="dot"></span> Timeless <span class="dot"></span> Tórshavn <span class="dot"></span> 18 Skálatrøð <span class="dot"></span>',
+  },
+  fo: {
+    'nav.about':'Um okkum','nav.crafts':'Handverk','nav.gallery':'Myndasavn','nav.reviews':'Dómar','nav.visit':'Vitja okkum',
+    'hero.eyebrow':'Tórshavn · Føroyar · Stovnað á Skálatrøð 18',
+    'hero.sub':'Listrikt Handverk<br>úr Norðurhavinum',
+    'hero.cta1':'Kanna Samlingina','hero.cta2':'Vár Søga','hero.scroll':'Rulla til at uppgeva',
+    'about.label':'Arvin okkara',
+    'about.heading':'Har Atlantshavið<br>møtir<br><em>listina</em>',
+    'about.quote':'"Gjørt<br>við sálu"',
+    'about.p1':'Mitt í hjarta <strong>Tórshavnar</strong> — heimsins minsta høvuðsstaðar — er Østrom eitt friðarríki av føroyskari listarvu. Vit savna og skapar handverk, sum ber sálina í hesar dramatiskar oyggjar, frá vindgæstum klettum til djúpa norðara havið.',
+    'about.p2':'Hvørt stykki í samlingini okkara er <strong>handgjørt við ynskju</strong>, at hylla hefðirnar samstundis sum vit faðma eina nútíðis skynsemi, sum talar til savlarar og kunnugingar um alt heiminn. Tá ið tú heldur á einum stykki frá Østrom, heldur tú á Føroyum sjálvum.',
+    'stat1.label':'Kúnda Einkun','stat2.label':'Staðfest Dómar','stat3.label':'Søgur Fortalt',
+    'crafts.label':'Handverk okkara',
+    'crafts.heading':'List fødd<br>av <em>náttúruni</em>',
+    'crafts.intro':'Hvørt stykki er eitt samtal millum listarmaðin og hið rága, útamda føroyska landslag — har hefðin formar hvønn stingn, hvørja boga, hvørt form.',
+    'craft1.num':'01 · Textilur','craft1.name':'Vevnaður & Textilur','craft1.desc':'Norðurlendsk mynster vevið í nútíðisligar formar. Hvørr tráður ber kynslóðir av føroyskum handverki, sum er farið gjøgnum hendur og tíð.',
+    'craft2.num':'02 · Fínlist','craft2.name':'Málning & Fínlist','craft2.desc':'Upprunalegar verk, sum fanga dramatískt føroysk ljós, skuggar og endalausa Atlantshavs sjóndeildarhringinn — fyri tey, sum savla hið óvanlega.',
+    'craft3.num':'03 · Skúlptúr','craft3.name':'Skúlptúrverk','craft3.desc':'Tríddimensjónaligar formar skaptar av heimligum steini, rekavið og beinum — veðrað av Norðurhavinum til tíðarleysts fagurleika.',
+    'ts.label':'Útvalda Samlingurin',
+    'ts.heading':'Mest <em>Selgdu</em>',
+    'ts.desc':'Vørurnar okkara, sum eru mest elskaðar — handgjørt prjónavørur, vevnaðar tekstilir og útivørur skaptar av føroyska veðrinum og bornar av teim, sum leita eftir hinum óvanlega.',
+    'ts.tag1':'Prjónavørur','ts.tag2':'Útivørur','ts.tag3':'Vevnaður Textilur','ts.tag4':'Tilbehør','ts.tag5':'Nýggjar Vørur',
+    'ts.cat.label':'Samlingurin','ts.women':'Kvinnur','ts.men':'Menn',
+    'gallery.label':'Samlingurin',
+    'gallery.heading':'Eitt glimt inn í<br><em>verkstovuna</em>',
+    'gallery.cta':'Vitja persónliga',
+    'gal1.label':'Atlantsljós','gal2.label':'Norðurhav','gal3.label':'Vevnaður Tráður','gal4.label':'Føroysk Grót','gal5.label':'Miðnætarsól',
+    'stmt.label':'Hví Østrom',
+    'stmt.heading':'Meira enn ein handil.<br>Ein <em>upplivning.</em>',
+    'stmt.sub':'Gakk inn gjøgnum dyrnar okkara á Skálatrøð og fær inn í eina heimsbyggju, har list, mentan og handverk samstemma — savlað við vandlegari umsorgu fyri tey, sum meta hið trulliga óvanlega.',
+    'stmt.cta':'Ætla Vitjanina',
+    'p1.title':'Heimligt Rætur','p1.desc':'Allar vørurnar eru tiðnar frá eður djúpt ínspirerat av Føroyum — ein ektaður menningarskapur, ikki ein ferðamannabúðin.',
+    'p2.title':'Útval Gæði','p2.desc':'Vit velja bert stykki av óvanligum handverki — verk, sum verða elskað og gein víðari til komandi kynslóðir.',
+    'p3.title':'Oyggjasøgur','p3.desc':'Hvørt stykki ber søguna av hessum oyggum — dramatískt, friðsælt og endalaust heiftandi fyri tey, sum vita at líta.',
+    'p4.title':'Gávuvert','p4.desc':'Fullkomna minningin fyri kravfullan ferðamann, ella ein gáva, sum sær Føroyar sum einki annað nakrantíð kann.',
+    'test.label':'Dómar',
+    'test.heading':'Hvat vitjandar<br><em>siga</em>',
+    'test.count':'44 Google Dómar',
+    'test1.text':'Ein heilt óvanligur staður í Tórshavn. Handverksliðugleikarnir eru ótrúligir — hvørt stykki fortelur søguna av hessum merkiligum oyggum. Eg gekk út við einki, sum eg mundi goyma til eilíftíðar.',
+    'test1.author':'Vitjandi frá Keypmannahavn',
+    'test2.text':'Eg fór av stað við fagurasta listverki úr hesi ótrúligu búðini. Starvsmaðurin var kunnugt og einlægt brennandi fyri hvørt stykki. Eitt skal-vitja í Tórshavn.',
+    'test2.author':'Ferðamaður frá London, UK',
+    'test3.text':'Hetta er staðurin, tú kemur til, tá ið tú vilt nakað sanniliga einlægt frá Føroyum. Ikki ein ferðamannagildrur — ekt list og handverk av hægsta máli. Vert hvønn króna.',
+    'test3.author':'Ferðandi frá New York',
+    'visit.label':'Finn okkum',
+    'visit.heading':'Kom<br><em>vitja</em><br>okkum',
+    'day.monThu':'Mánadagur – Hósdagur','day.fri':'Fríggjadagur','day.sat':'Leygardagur','day.sun':'Sunnudagur','closed':'Latað',
+    'contact.addr.label':'Bústaður','contact.addr.val':'18 Skálatrøð<br>Tórshavn 100, Føroyar',
+    'contact.tel.label':'Telefon','contact.social.label':'Fylg okkum',
+    'foot.desc':'Listrikt handverk úr hjarta Tórshavnar — har Norðurhavið skapar fagurleika, og hefðin møtir listini.',
+    'foot.nav':'Fara','foot.col.visit':'Vitja','foot.connect':'Samband',
+    'foot.home':'Heim','foot.about':'Um okkum','foot.crafts':'Handverk okkara','foot.gallery':'Myndasavn','foot.reviews':'Dómar',
+    'foot.hours':'Opnunartímar','foot.directions':'Leiðbeining','foot.contact':'Samband við okkum',
+    'foot.copy':'© 2025 Østrom · 18 Skálatrøð · Tórshavn 100 · Føroyar',
+    'ticker':'Handgjørt <span class="dot"></span> Listrænt <span class="dot"></span> Ektað Føroysk <span class="dot"></span> Eilíft <span class="dot"></span> Tórshavn <span class="dot"></span> 18 Skálatrøð <span class="dot"></span> Handgjørt <span class="dot"></span> Listrænt <span class="dot"></span> Ektað Føroysk <span class="dot"></span> Eilíft <span class="dot"></span> Tórshavn <span class="dot"></span> 18 Skálatrøð <span class="dot"></span>',
+  }
+};
+
+let lang = 'en';
+
+function setLang(newLang) {
+    if (newLang === lang) return;
+    lang = newLang;
+
+    document.body.classList.add('lang-switching');
+
+    setTimeout(() => {
+        // plain text
+        document.querySelectorAll('[data-i18n]').forEach(el => {
+            const v = t[lang][el.dataset.i18n];
+            if (v !== undefined) el.textContent = v;
+        });
+        // html content
+        document.querySelectorAll('[data-i18n-html]').forEach(el => {
+            const v = t[lang][el.dataset.i18nHtml];
+            if (v !== undefined) el.innerHTML = v;
+        });
+        // ticker
+        document.getElementById('tick1').innerHTML = t[lang]['ticker'];
+        document.getElementById('tick2').innerHTML = t[lang]['ticker'];
+        // title & lang attr
+        document.title = lang === 'fo'
+            ? 'Østrom — Listrikt Handverk · Tórshavn, Føroyar'
+            : 'Østrom — Artistic Handicrafts · Tórshavn, Faroe Islands';
+        document.documentElement.lang = lang;
+        // button state
+        document.getElementById('btn-en').classList.toggle('active', lang === 'en');
+        document.getElementById('btn-fo').classList.toggle('active', lang === 'fo');
+
+        document.body.classList.remove('lang-switching');
+    }, 200);
+}
+
+document.getElementById('btn-en').addEventListener('click', () => setLang('en'));
+document.getElementById('btn-fo').addEventListener('click', () => setLang('fo'));
+
+/* ── TOUCH DEVICE DETECTION ── */
+const isTouch = ('ontouchstart' in window) || navigator.maxTouchPoints > 0;
+if (isTouch) {
+    document.body.style.cursor = 'auto';
+    document.getElementById('cursor').style.display  = 'none';
+    document.getElementById('follower').style.display = 'none';
+    document.getElementById('craftsHint').style.display = 'flex';
+} else {
+    document.getElementById('craftsHint').style.display = 'none';
+}
+
+/* ── CURSOR (desktop only) ── */
+const cur = document.getElementById('cursor');
+const fol = document.getElementById('follower');
+let mx=0,my=0,fx=0,fy=0;
+if (!isTouch) {
+    document.addEventListener('mousemove', e => {
+        mx = e.clientX; my = e.clientY;
+        cur.style.transform = `translate(${mx}px,${my}px) translate(-50%,-50%)`;
+    });
+    (function loop(){ fx+=(mx-fx)*.12; fy+=(my-fy)*.12; fol.style.transform=`translate(${fx}px,${fy}px) translate(-50%,-50%)`; requestAnimationFrame(loop); })();
+    document.querySelectorAll('a,button,.craft,.gal-item,.test-card,.lang-opt').forEach(el=>{
+        el.addEventListener('mouseenter',()=>document.body.classList.add('cursor-expand'));
+        el.addEventListener('mouseleave',()=>document.body.classList.remove('cursor-expand'));
+    });
+}
+
+/* ── NAV SCROLL ── */
+const nav = document.getElementById('nav');
+window.addEventListener('scroll', () => nav.classList.toggle('scrolled', window.scrollY > 70));
+
+/* ── MOBILE MENU ── */
+const burger = document.getElementById('burger');
+burger.addEventListener('click', () => document.body.classList.toggle('nav-open'));
+document.querySelectorAll('#navlinks a').forEach(a => a.addEventListener('click', () => document.body.classList.remove('nav-open')));
+/* close mobile menu when lang switched */
+document.querySelectorAll('.lang-opt').forEach(b => b.addEventListener('click', () => document.body.classList.remove('nav-open')));
+
+/* ── SCROLL PROGRESS BAR ── */
+const scrollBar = document.createElement('div');
+scrollBar.className = 'scroll-bar';
+document.body.prepend(scrollBar);
+window.addEventListener('scroll', () => {
+    const pct = window.scrollY / (document.body.scrollHeight - window.innerHeight) * 100;
+    scrollBar.style.width = pct + '%';
+}, { passive:true });
+
+/* ── REVEAL ON SCROLL ── */
+const io = new IntersectionObserver(entries => entries.forEach(e => {
+    if(e.isIntersecting) e.target.classList.add('in');
+}), { threshold:.12 });
+document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+/* ── STAT COUNTER ── */
+function runCounter(el) {
+    const raw = el.textContent.trim();
+    if (raw.includes('∞')) { el.style.opacity='0'; setTimeout(()=>{ el.style.transition='opacity .8s ease'; el.style.opacity='1'; }, 100); return; }
+    const hasStar  = raw.includes('★');
+    const hasPlus  = raw.includes('+');
+    const hasDot   = raw.includes('.');
+    const target   = parseFloat(raw);
+    if (isNaN(target)) return;
+    const duration = 1400;
+    const start    = performance.now();
+    (function tick(now) {
+        const p = Math.min((now - start) / duration, 1);
+        const e = 1 - Math.pow(1 - p, 4); // ease-out quart
+        const v = target * e;
+        let str = hasDot ? v.toFixed(1) : Math.floor(v).toString();
+        if (hasStar) str += '★';
+        if (hasPlus) str += '+';
+        el.textContent = str;
+        if (p < 1) requestAnimationFrame(tick);
+    })(start);
+}
+const statObs = new IntersectionObserver(entries => {
+    entries.forEach(e => { if(e.isIntersecting){ runCounter(e.target); statObs.unobserve(e.target); }});
+}, { threshold:.9 });
+document.querySelectorAll('.stat-n').forEach(el => statObs.observe(el));
+
+/* ── MAGNETIC BUTTONS ── */
+document.querySelectorAll('.btn-gold').forEach(btn => {
+    btn.addEventListener('mousemove', e => {
+        const r = btn.getBoundingClientRect();
+        const x = (e.clientX - r.left - r.width  / 2) * 0.18;
+        const y = (e.clientY - r.top  - r.height / 2) * 0.28;
+        btn.style.transform = `translate(${x}px,${y}px) translateY(-2px)`;
+    });
+    btn.addEventListener('mouseleave', () => { btn.style.transform = ''; });
+});
+
+/* ── HERO PARALLAX (desktop only) ── */
+if (!isTouch) {
+    const heroTitle = document.querySelector('.hero-title');
+    window.addEventListener('scroll', () => {
+        const y = window.scrollY;
+        if(heroTitle && y < window.innerHeight) heroTitle.style.transform = `translateY(${y*.18}px)`;
+    }, { passive:true });
+}
+</script>
+</body>
+</html>
