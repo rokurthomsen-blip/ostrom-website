@@ -68,7 +68,8 @@
         /* ── NAV ── */
         nav { position:fixed; top:0; left:0; right:0; z-index:900; padding:28px 64px; display:flex; align-items:center; justify-content:space-between; transition:padding .5s, background .5s, border-color .5s; border-bottom:1px solid transparent; }
         nav.scrolled { padding:16px 64px; background:rgba(8,8,8,.9); backdrop-filter:blur(24px); border-bottom-color:rgba(196,150,58,.15); }
-        .nav-logo { font-family:var(--font-serif); font-size:26px; font-weight:400; letter-spacing:5px; text-transform:uppercase; }
+        .nav-logo { display:inline-flex; align-items:center; gap:12px; font-family:var(--font-serif); font-size:26px; font-weight:400; letter-spacing:5px; text-transform:uppercase; }
+        .nav-logo-img { width:46px; height:46px; flex-shrink:0; border-radius:50%; object-fit:contain; padding:5px; background:#F1E9DB; border:1.5px solid rgba(196,150,58,.6); filter:sepia(.6) saturate(1.5) brightness(1.02); }
         .nav-logo span { color:var(--gold); }
         .nav-right { display:flex; align-items:center; gap:40px; }
         .nav-links { display:flex; gap:48px; list-style:none; }
@@ -365,7 +366,8 @@
             .hero-scroll { display:none; }
 
             /* ─ NAV LOGO: tighter on small screens ─ */
-            .nav-logo { font-size:20px; letter-spacing:3px; }
+            .nav-logo { font-size:20px; letter-spacing:3px; gap:9px; }
+            .nav-logo-img { width:36px; height:36px; padding:4px; }
 
             /* ─ TICKER: tighter gaps, less tracking ─ */
             .ticker-track { gap:36px; }
@@ -506,7 +508,7 @@
 
 <!-- ══ NAV ══ -->
 <nav id="nav">
-    <a href="#" class="nav-logo">Ø<span>s</span>tröm</a>
+    <a href="#" class="nav-logo"><img class="nav-logo-img" src="images/ostrom-logo.jpg" alt="Østrom logo">Ø<span>s</span>tröm</a>
 
     <div class="nav-right">
         <ul class="nav-links" id="navlinks">
