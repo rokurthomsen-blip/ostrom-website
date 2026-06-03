@@ -1281,9 +1281,9 @@ reviewForm.addEventListener('submit', e => {
             .then(d => {
                 revSubmit.disabled = false;
                 if (d.success) { reviewForm.reset(); reviewRating = 0; paintStars(0); showRevMsg(t[lang]['rev.thanks'], true); }
-                else { showRevMsg('DIAGNOSTIC — Web3Forms replied: ' + (d.message || JSON.stringify(d)), false); }
+                else { showRevMsg(t[lang]['rev.error'], false); }
             })
-            .catch(err => { revSubmit.disabled = false; showRevMsg('DIAGNOSTIC — request blocked before sending: ' + (err && err.message ? err.message : err), false); });
+            .catch(() => { revSubmit.disabled = false; showRevMsg(t[lang]['rev.error'], false); });
     } else {
         const subject = 'New review — ' + reviewRating + ' stars from ' + name;
         const body = 'Name: ' + name + '\nRating: ' + reviewRating + ' / 5\n\n' + text;
