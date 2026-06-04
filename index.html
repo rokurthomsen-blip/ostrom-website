@@ -178,6 +178,9 @@
         .gal-item:nth-child(3) { grid-column:span 4; aspect-ratio:4/5; }
         .gal-item:nth-child(4) { grid-column:span 4; aspect-ratio:4/5; }
         .gal-item:nth-child(5) { grid-column:span 4; aspect-ratio:4/5; }
+        .gal-item:nth-child(6) { grid-column:span 4; aspect-ratio:4/5; }
+        .gal-item:nth-child(7) { grid-column:span 4; aspect-ratio:4/5; }
+        .gal-item:nth-child(8) { grid-column:span 4; aspect-ratio:4/5; }
         .gal-fill { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; transition:transform .8s cubic-bezier(.25,.46,.45,.94); filter:brightness(.75) saturate(.85); }
         .gal-item:hover .gal-fill { transform:scale(1.06); filter:brightness(.85) saturate(.95); }
         .gal-gloss { position:absolute; inset:0; background:rgba(0,0,0,0); transition:background .4s; }
@@ -682,6 +685,18 @@
             <img class="gal-fill" src="images/outerwear.jpg" alt="Knitwear and outerwear at Østrom" loading="lazy">
             <div class="gal-gloss"></div><span class="gal-label" data-i18n="gal5.label">Midnight Sun</span>
         </div>
+        <div class="gal-item">
+            <img class="gal-fill" src="images/shop-stairs.jpg" alt="The staircase inside Østrom" loading="lazy">
+            <div class="gal-gloss"></div><span class="gal-label" data-i18n="gal6.label">The Stairway</span>
+        </div>
+        <div class="gal-item">
+            <img class="gal-fill" src="images/shop-knitwear.jpg" alt="Knitwear and crafts at Østrom" loading="lazy">
+            <div class="gal-gloss"></div><span class="gal-label" data-i18n="gal7.label">Knitwear</span>
+        </div>
+        <div class="gal-item">
+            <img class="gal-fill" src="images/shop-candles.jpg" alt="Faroese candles and crafts at Østrom" loading="lazy">
+            <div class="gal-gloss"></div><span class="gal-label" data-i18n="gal8.label">Candles</span>
+        </div>
     </div>
 </section>
 
@@ -899,7 +914,7 @@ const t = {
     'gallery.label':'The Collection',
     'gallery.heading':'A glimpse into<br><em>the atelier</em>',
     'gallery.cta':'Visit in Person',
-    'gal1.label':'The Shop','gal2.label':'Faroese Dress','gal3.label':'Handcraft','gal4.label':'Our Goods','gal5.label':'Outerwear',
+    'gal1.label':'The Shop','gal2.label':'Faroese Dress','gal3.label':'Handcraft','gal4.label':'Our Goods','gal5.label':'Outerwear','gal6.label':'The Stairway','gal7.label':'Knitwear','gal8.label':'Candles',
     'stmt.label':'Why Østrom',
     'stmt.heading':'More than a shop.<br>An <em>experience.</em>',
     'stmt.sub':'Step through our doors on Skálatrøð and enter a world where art, culture, and craft converge — curated with meticulous care for those who appreciate the truly extraordinary.',
@@ -955,7 +970,7 @@ const t = {
     'gallery.label':'Samlingurin',
     'gallery.heading':'Eitt glimt inn í<br><em>verkstovuna</em>',
     'gallery.cta':'Vitja persónliga',
-    'gal1.label':'Búðin','gal2.label':'Føroyskur Búningur','gal3.label':'Handverk','gal4.label':'Vørur','gal5.label':'Útivørur',
+    'gal1.label':'Búðin','gal2.label':'Føroyskur Búningur','gal3.label':'Handverk','gal4.label':'Vørur','gal5.label':'Útivørur','gal6.label':'Trappan','gal7.label':'Prjónavørur','gal8.label':'Ljós',
     'stmt.label':'Hví Østrom',
     'stmt.heading':'Meira enn ein handil.<br>Ein <em>upplivning.</em>',
     'stmt.sub':'Stíg inn um dyrnar hjá Østrøm á Skálatrøð og uppliv Føroyar gjøgnum list, sniðgeving og handverk. Hvørt verk, hvør lutur og hvør søga er vald við nærlagni fyri at vísa tað besta, føroysk skapanarkraft hevur at bjóða.',
