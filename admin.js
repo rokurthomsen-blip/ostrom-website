@@ -119,7 +119,16 @@
 
     document.addEventListener('click', function (e) {
         if (!editing) return;
-        var img = e.target && e.target.closest ? e.target.closest('[data-img]') : null;
+        /* if the click landed on editable text, let the user edit the text */
+        if (e.target && e.target.closest && e.target.closest('[contenteditable="true"]')) return;
+        if (e.target && e.target.closest && e.target.closest('.admin-bar, .admin-panel')) return;
+        /* photos are often covered by effect layers — look through every
+           layer under the mouse until we find the photo itself */
+        var img = null;
+        var stack = document.elementsFromPoint(e.clientX, e.clientY);
+        for (var i = 0; i < stack.length; i++) {
+            if (stack[i].dataset && stack[i].dataset.img) { img = stack[i]; break; }
+        }
         if (!img) return;
         e.preventDefault();
         e.stopPropagation();

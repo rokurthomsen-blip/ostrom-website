@@ -515,6 +515,11 @@
         body.admin-mode [contenteditable="true"]:hover, body.admin-mode [contenteditable="true"]:focus { outline:2px solid var(--gold); background:var(--gold-glow); }
         body.admin-mode [data-img] { cursor:pointer !important; }
         body.admin-mode [data-img]:hover { outline:3px dashed var(--gold); outline-offset:-3px; opacity:.85; }
+        /* let clicks pass through the effect layers that sit on top of photos */
+        body.admin-mode .gal-gloss, body.admin-mode .craft-shade, body.admin-mode .craft-glyph,
+        body.admin-mode .hero-right-veil, body.admin-mode .visit-map-veil,
+        body.admin-mode .about-main::after, body.admin-mode .hero-right { pointer-events:none; }
+        body.admin-mode .hero-right img { pointer-events:auto; }
         .admin-bar { position:fixed; bottom:0; left:0; right:0; z-index:10000; background:rgba(12,12,12,.97); border-top:1px solid var(--gold); padding:14px 20px; display:none; flex-wrap:wrap; gap:10px; align-items:center; justify-content:center; font-family:var(--font-sans); }
         body.admin-mode .admin-bar { display:flex; }
         .admin-hint { font-size:11px; letter-spacing:1px; color:#cfcabe; margin-right:12px; }
@@ -1207,6 +1212,6 @@ if (!isTouch) {
     }, { passive:true });
 }
 </script>
-<script src="admin.js" defer></script>
+<script src="admin.js?v=2" defer></script>
 </body>
 </html>
