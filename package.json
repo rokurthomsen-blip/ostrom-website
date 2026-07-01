@@ -1,0 +1,10 @@
+{
+  "name": "ostrom-website",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Østrom — static site with an admin content editor backed by Vercel serverless functions and Vercel Blob.",
+  "dependencies": {
+    "@vercel/blob": "^0.27.3"
+  }
+}

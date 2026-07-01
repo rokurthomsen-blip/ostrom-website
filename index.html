@@ -497,6 +497,54 @@
             .foot-bottom { flex-direction:column; gap:12px; text-align:center; }
             .foot-copy { font-size:10px; }
         }
+
+        /* ══ ADMIN / CONTENT EDITOR ══ */
+        .admin-link { background:none; border:none; color:var(--muted); font-family:var(--font-sans); font-size:9px; letter-spacing:3px; text-transform:uppercase; cursor:pointer; opacity:.5; transition:color .3s, opacity .3s; padding:4px 6px; }
+        .admin-link:hover { color:var(--gold); opacity:1; }
+
+        /* password + generic admin modal */
+        .admin-overlay { position:fixed; inset:0; z-index:2000; display:flex; align-items:center; justify-content:center; padding:24px; background:rgba(4,4,4,.85); backdrop-filter:blur(10px); opacity:0; visibility:hidden; transition:opacity .3s, visibility .3s; cursor:auto; }
+        .admin-overlay.open { opacity:1; visibility:visible; }
+        .admin-box { background:var(--dark-mid); border:1px solid rgba(196,150,58,.25); width:100%; max-width:420px; padding:48px 40px; position:relative; }
+        .admin-box .label { margin-bottom:18px; }
+        .admin-box h3 { font-family:var(--font-serif); font-size:34px; font-weight:300; letter-spacing:-1px; margin-bottom:10px; }
+        .admin-box h3 em { font-style:italic; color:var(--gold); }
+        .admin-box p.admin-hint { font-size:12px; color:var(--muted); line-height:1.6; margin-bottom:26px; }
+        .admin-close { position:absolute; top:18px; right:20px; background:none; border:none; color:var(--muted); font-size:26px; line-height:1; cursor:pointer; transition:color .3s, transform .3s; }
+        .admin-close:hover { color:var(--gold); transform:rotate(90deg); }
+        .admin-box input[type=password] { width:100%; background:var(--black); border:1px solid rgba(196,150,58,.2); color:var(--white); font-family:var(--font-sans); font-size:15px; padding:14px 16px; cursor:text; transition:border-color .3s; }
+        .admin-box input[type=password]:focus { outline:none; border-color:var(--gold); }
+        .admin-box .btn-gold { width:100%; text-align:center; border:none; cursor:pointer; margin-top:22px; }
+        .admin-msg { min-height:16px; font-size:11px; letter-spacing:1px; margin-top:14px; }
+        .admin-msg.err { color:#d98c6a; }
+        .admin-msg.ok  { color:var(--gold); }
+
+        /* edit-mode toolbar */
+        .edit-bar { position:fixed; left:0; right:0; bottom:0; z-index:1900; display:none; align-items:center; gap:16px; flex-wrap:wrap; padding:14px 24px; background:rgba(12,12,12,.96); backdrop-filter:blur(20px); border-top:1px solid rgba(196,150,58,.3); }
+        body.admin-editing .edit-bar { display:flex; }
+        .edit-bar .eb-title { font-family:var(--font-serif); font-size:20px; color:var(--gold); }
+        .edit-bar .eb-hint { font-size:11px; color:var(--muted); letter-spacing:1px; flex:1; min-width:180px; }
+        .edit-bar button { font-family:var(--font-sans); font-size:10px; letter-spacing:2px; text-transform:uppercase; padding:12px 24px; cursor:pointer; border:1px solid transparent; transition:background .25s, color .25s, border-color .25s; }
+        .eb-save { background:var(--gold); color:var(--black); border:none; font-weight:600; }
+        .eb-save:hover { background:var(--gold-light); }
+        .eb-save:disabled { opacity:.5; cursor:default; }
+        .eb-exit { background:transparent; color:var(--muted); border-color:rgba(196,150,58,.35); }
+        .eb-exit:hover { color:var(--white); border-color:var(--gold); }
+        .eb-status { font-size:11px; letter-spacing:1px; color:var(--gold); min-width:80px; }
+
+        /* editing affordances */
+        body.admin-editing { cursor:auto !important; padding-bottom:72px; }
+        body.admin-editing .cursor, body.admin-editing .cursor-follower { display:none !important; }
+        body.admin-editing [data-i18n], body.admin-editing [data-i18n-html], body.admin-editing [data-edit] { outline:1px dashed rgba(196,150,58,.5); outline-offset:3px; cursor:text; border-radius:2px; transition:outline-color .2s, background .2s; }
+        body.admin-editing [contenteditable]:hover { outline-color:var(--gold); background:rgba(196,150,58,.06); }
+        body.admin-editing [contenteditable]:focus { outline:2px solid var(--gold); background:rgba(196,150,58,.08); }
+
+        /* image change overlay */
+        .img-edit-wrap { position:relative; }
+        .img-edit-btn { position:absolute; inset:0; z-index:5; display:none; align-items:center; justify-content:center; gap:8px; background:rgba(8,8,8,.55); color:var(--white); font-family:var(--font-sans); font-size:11px; letter-spacing:2px; text-transform:uppercase; border:2px solid var(--gold); cursor:pointer; opacity:0; transition:opacity .25s; }
+        body.admin-editing .img-edit-btn { display:flex; opacity:0; }
+        body.admin-editing .img-edit-wrap:hover .img-edit-btn { opacity:1; }
+        .img-edit-btn.busy { opacity:1 !important; background:rgba(8,8,8,.8); }
     </style>
 </head>
 <body>
@@ -546,7 +594,7 @@
     </div>
 
     <div class="hero-right">
-        <img src="images/campaign.jpg" alt="Østrom — Faroe Islands Collection" />
+        <img src="images/campaign.jpg" alt="Østrom — Faroe Islands Collection" data-img="hero" />
         <div class="hero-right-veil"></div>
     </div>
 
@@ -569,12 +617,14 @@
             <img class="about-main-img"
                  src="images/faroese-dress.jpg"
                  alt="Traditional Faroese dress on display at Østrom"
+                 data-img="aboutMain"
                  loading="lazy">
         </div>
         <div class="about-float">
             <img class="about-float-img"
                  src="images/artisan-goods.jpg"
                  alt="Curated artisan goods on the shelves at Østrom"
+                 data-img="aboutFloat"
                  loading="lazy">
             <div class="about-float-q" data-i18n-html="about.quote">"Crafted<br>with soul"</div>
             <div class="about-float-l"></div>
@@ -589,15 +639,15 @@
         <p class="reveal" data-delay="3" data-i18n-html="about.p2">Each piece in our collection is <strong>handcrafted with intention</strong>, celebrating traditions while embracing a contemporary sensibility that speaks to collectors and connoisseurs worldwide. When you hold a piece from Østrom, you hold the Faroe Islands themselves.</p>
         <div class="stats">
             <div class="stat reveal" data-delay="2">
-                <div class="stat-n">4.5★</div>
+                <div class="stat-n" data-edit="stat1.num">4.5★</div>
                 <div class="stat-l" data-i18n="stat1.label">Customer Rating</div>
             </div>
             <div class="stat reveal" data-delay="3">
-                <div class="stat-n">44+</div>
+                <div class="stat-n" data-edit="stat2.num">44+</div>
                 <div class="stat-l" data-i18n="stat2.label">Verified Reviews</div>
             </div>
             <div class="stat reveal" data-delay="4">
-                <div class="stat-n">∞</div>
+                <div class="stat-n" data-edit="stat3.num">∞</div>
                 <div class="stat-l" data-i18n="stat3.label">Stories Told</div>
             </div>
         </div>
@@ -616,7 +666,7 @@
 
     <div class="crafts-grid" id="craftsGrid">
         <div class="craft reveal" data-delay="1">
-            <img class="craft-bg" src="images/outerwear.jpg" alt="Knitwear and apparel at Østrom" loading="lazy">
+            <img class="craft-bg" src="images/outerwear.jpg" alt="Knitwear and apparel at Østrom" data-img="craft1" loading="lazy">
             <div class="craft-shade"></div>
             <div class="craft-glyph">🧶</div>
             <div class="craft-body">
@@ -626,7 +676,7 @@
             </div>
         </div>
         <div class="craft reveal" data-delay="2">
-            <img class="craft-bg" src="images/shop-interior.jpg" alt="Design objects displayed at Østrom" loading="lazy">
+            <img class="craft-bg" src="images/shop-interior.jpg" alt="Design objects displayed at Østrom" data-img="craft2" loading="lazy">
             <div class="craft-shade"></div>
             <div class="craft-glyph">🎨</div>
             <div class="craft-body">
@@ -636,7 +686,7 @@
             </div>
         </div>
         <div class="craft reveal" data-delay="3">
-            <img class="craft-bg" src="images/wood-table.jpg" alt="Wooden sculptural works at Østrom" loading="lazy">
+            <img class="craft-bg" src="images/wood-table.jpg" alt="Wooden sculptural works at Østrom" data-img="craft3" loading="lazy">
             <div class="craft-shade"></div>
             <div class="craft-glyph">🏺</div>
             <div class="craft-body">
@@ -660,23 +710,23 @@
     </div>
     <div class="gallery-grid">
         <div class="gal-item">
-            <img class="gal-fill" src="images/shop-interior.jpg" alt="Inside the Østrom shop in Tórshavn" loading="lazy">
+            <img class="gal-fill" src="images/shop-interior.jpg" alt="Inside the Østrom shop in Tórshavn" data-img="gal1" loading="lazy">
             <div class="gal-gloss"></div><span class="gal-label" data-i18n="gal1.label">Atlantic Light</span>
         </div>
         <div class="gal-item">
-            <img class="gal-fill" src="images/faroese-dress.jpg" alt="Traditional Faroese dress at Østrom" loading="lazy">
+            <img class="gal-fill" src="images/faroese-dress.jpg" alt="Traditional Faroese dress at Østrom" data-img="gal2" loading="lazy">
             <div class="gal-gloss"></div><span class="gal-label" data-i18n="gal2.label">North Sea</span>
         </div>
         <div class="gal-item">
-            <img class="gal-fill" src="images/wood-table.jpg" alt="Live-edge wooden table with handcrafted pieces" loading="lazy">
+            <img class="gal-fill" src="images/wood-table.jpg" alt="Live-edge wooden table with handcrafted pieces" data-img="gal3" loading="lazy">
             <div class="gal-gloss"></div><span class="gal-label" data-i18n="gal3.label">Woven Thread</span>
         </div>
         <div class="gal-item">
-            <img class="gal-fill" src="images/artisan-goods.jpg" alt="Shelves of curated artisan goods" loading="lazy">
+            <img class="gal-fill" src="images/artisan-goods.jpg" alt="Shelves of curated artisan goods" data-img="gal4" loading="lazy">
             <div class="gal-gloss"></div><span class="gal-label" data-i18n="gal4.label">Faroe Stone</span>
         </div>
         <div class="gal-item">
-            <img class="gal-fill" src="images/outerwear.jpg" alt="Knitwear and outerwear at Østrom" loading="lazy">
+            <img class="gal-fill" src="images/outerwear.jpg" alt="Knitwear and outerwear at Østrom" data-img="gal5" loading="lazy">
             <div class="gal-gloss"></div><span class="gal-label" data-i18n="gal5.label">Midnight Sun</span>
         </div>
     </div>
@@ -720,7 +770,7 @@
             <h2 class="heading reveal" data-delay="1"  data-i18n-html="test.heading">What visitors<br><em>are saying</em></h2>
         </div>
         <div class="test-score reveal">
-            <div class="test-big">4.5</div>
+            <div class="test-big" data-edit="test.big">4.5</div>
             <div class="test-stars">★★★★<span style="opacity:.45">★</span></div>
             <div class="test-count" data-i18n="test.count">44 Google Reviews</div>
         </div>
@@ -756,9 +806,9 @@
         <div class="label reveal"                  data-i18n="visit.label">Come See Us</div>
         <h2 class="heading reveal" data-delay="1"  data-i18n-html="visit.heading">Come<br><em>visit</em><br>us</h2>
         <div class="hours reveal" data-delay="2">
-            <div class="hour"><span class="h-day" data-i18n="day.monThu">Monday – Thursday</span><span class="h-time">10:00 – 17:30</span></div>
-            <div class="hour"><span class="h-day" data-i18n="day.fri">Friday</span><span class="h-time">10:00 – 18:00</span></div>
-            <div class="hour"><span class="h-day" data-i18n="day.sat">Saturday</span><span class="h-time">10:00 – 16:00</span></div>
+            <div class="hour"><span class="h-day" data-i18n="day.monThu">Monday – Thursday</span><span class="h-time" data-edit="hours.monThu">10:00 – 17:30</span></div>
+            <div class="hour"><span class="h-day" data-i18n="day.fri">Friday</span><span class="h-time" data-edit="hours.fri">10:00 – 18:00</span></div>
+            <div class="hour"><span class="h-day" data-i18n="day.sat">Saturday</span><span class="h-time" data-edit="hours.sat">10:00 – 16:00</span></div>
             <div class="hour"><span class="h-day" data-i18n="day.sun">Sunday</span><span class="h-time closed" data-i18n="closed">Closed</span></div>
         </div>
         <div class="visit-contacts reveal" data-delay="3">
@@ -827,12 +877,38 @@
     </div>
     <div class="foot-bottom">
         <p class="foot-copy" data-i18n="foot.copy">© 2025 Østrom · 18 Skálatrøð · Tórshavn 100 · Faroe Islands</p>
+        <button type="button" class="admin-link" id="admin-open" data-i18n="admin.link">Admin</button>
         <div class="socials">
             <a href="https://facebook.com" class="soc-btn" target="_blank" rel="noopener" aria-label="Facebook">f</a>
             <a href="https://www.google.com/maps/search/ostrom+torshavn" class="soc-btn" target="_blank" rel="noopener" aria-label="Maps">g</a>
         </div>
     </div>
 </footer>
+
+<!-- ══ ADMIN: PASSWORD PROMPT ══ -->
+<div class="admin-overlay" id="admin-overlay" aria-hidden="true">
+    <div class="admin-box" role="dialog" aria-modal="true" aria-labelledby="admin-title">
+        <button type="button" class="admin-close" id="admin-cancel" aria-label="Close">&times;</button>
+        <div class="label" data-i18n="admin.label">Restricted</div>
+        <h3 id="admin-title" data-i18n-html="admin.title">Admin <em>Login</em></h3>
+        <p class="admin-hint" data-i18n="admin.hint">Enter the admin password to edit the site's text and photos.</p>
+        <form id="admin-form">
+            <input type="password" id="admin-pass" autocomplete="current-password" data-i18n-ph="admin.ph" placeholder="Password">
+            <div class="admin-msg" id="admin-msg" aria-live="polite"></div>
+            <button type="submit" class="btn-gold" data-i18n="admin.enter">Enter</button>
+        </form>
+    </div>
+</div>
+
+<!-- ══ ADMIN: EDIT TOOLBAR ══ -->
+<div class="edit-bar" id="edit-bar">
+    <span class="eb-title">Østrom</span>
+    <span class="eb-hint" id="eb-hint" data-i18n="admin.editing">Editing mode — click any text to change it, hover a photo to replace it. Switch language to edit the other.</span>
+    <span class="eb-status" id="eb-status"></span>
+    <button type="button" class="eb-exit" id="eb-exit" data-i18n="admin.exit">Exit</button>
+    <button type="button" class="eb-save" id="eb-save" data-i18n="admin.save">Save changes</button>
+</div>
+<input type="file" id="img-file-input" accept="image/*" style="display:none">
 
 <!-- ── Business info for Google (address, hours, map location) ── -->
 <script type="application/ld+json">
@@ -871,6 +947,11 @@
 const t = {
   en: {
     'nav.about':'About','nav.crafts':'Crafts','nav.gallery':'Gallery','nav.reviews':'Reviews','nav.visit':'Visit Us',
+    'admin.link':'Admin','admin.label':'Restricted','admin.title':'Admin <em>Login</em>',
+    'admin.hint':'Enter the admin password to edit the site’s text and photos.',
+    'admin.ph':'Password','admin.enter':'Enter',
+    'admin.editing':'Editing mode — click any text to change it, hover a photo to replace it. Switch language to edit the other.',
+    'admin.exit':'Exit','admin.save':'Save changes',
     'hero.eyebrow':'Tórshavn · Faroe Islands · Est. Skálatrøð 18',
     'hero.sub':'Artistic Handicrafts<br>of the North Atlantic',
     'hero.cta1':'Explore Collection','hero.cta2':'Our Story','hero.scroll':'Scroll to Discover',
@@ -927,6 +1008,11 @@ const t = {
   },
   fo: {
     'nav.about':'Um okkum','nav.crafts':'Handverk','nav.gallery':'Myndasavn','nav.reviews':'Dómar','nav.visit':'Vitja okkum',
+    'admin.link':'Admin','admin.label':'Avmarkað','admin.title':'Admin <em>Innritan</em>',
+    'admin.hint':'Skriva admin loyniorðið fyri at broyta tekst og myndir á síðuni.',
+    'admin.ph':'Loyniorð','admin.enter':'Inn',
+    'admin.editing':'Rættingarstøða — trýst á tekst fyri at broyta, hall yvir eina mynd fyri at skifta. Skift mál fyri at rætta hitt.',
+    'admin.exit':'Far út','admin.save':'Goym broytingar',
     'hero.eyebrow':'Tórshavn · Føroyar · Stovnað á Skálatrøð 18',
     'hero.sub':'Listrikt Handverk<br>úr Norðurhavinum',
     'hero.cta1':'Kanna Samlingina','hero.cta2':'Vár Søga','hero.scroll':'Rulla til at uppgeva',
@@ -998,6 +1084,11 @@ function applyLang() {
     document.querySelectorAll('[data-i18n-html]').forEach(el => {
         const v = t[lang][el.dataset.i18nHtml];
         if (v !== undefined) el.innerHTML = v;
+    });
+    // input/textarea placeholders
+    document.querySelectorAll('[data-i18n-ph]').forEach(el => {
+        const v = t[lang][el.dataset.i18nPh];
+        if (v !== undefined) el.placeholder = v;
     });
     // ticker
     document.getElementById('tick1').innerHTML = t[lang]['ticker'];
@@ -1133,6 +1224,246 @@ if (!isTouch) {
         if(heroTitle && y < window.innerHeight) heroTitle.style.transform = `translateY(${y*.18}px)`;
     }, { passive:true });
 }
+
+/* ══════════════════════════════════════════════════════════════
+   ADMIN CONTENT EDITOR
+   - Loads saved overrides (text + photos) so every visitor sees edits.
+   - Password-gated in-place editor that saves back to the server.
+   ══════════════════════════════════════════════════════════════ */
+(function () {
+    const textEls  = () => document.querySelectorAll('[data-i18n],[data-i18n-html],[data-edit]');
+    const imgEls   = () => document.querySelectorAll('[data-img]');
+
+    // Snapshot the built-in defaults so we only persist genuine changes.
+    const DEFAULT_I18N  = JSON.parse(JSON.stringify(t));
+    const DEFAULT_TEXT  = {};   // data-edit key -> original text
+    const DEFAULT_IMG   = {};   // data-img key  -> original src
+    document.querySelectorAll('[data-edit]').forEach(el => { DEFAULT_TEXT[el.dataset.edit] = el.textContent; });
+    imgEls().forEach(el => { DEFAULT_IMG[el.dataset.img] = el.getAttribute('src'); });
+
+    // The live override model (only holds values that differ from default).
+    const model = { i18n: { en: {}, fo: {} }, text: {}, images: {} };
+    let password = null;      // held in memory only after a successful login
+    let editing  = false;
+    let dirty    = false;
+
+    /* ---- apply an override model to the page ---- */
+    function applyModel(m) {
+        if (!m) return;
+        if (m.i18n) {
+            ['en', 'fo'].forEach(L => {
+                if (!m.i18n[L]) return;
+                Object.keys(m.i18n[L]).forEach(k => {
+                    if (t[L] && k in t[L]) { t[L][k] = m.i18n[L][k]; model.i18n[L][k] = m.i18n[L][k]; }
+                });
+            });
+            applyLang();  // repaint current language from the patched dictionary
+        }
+        if (m.text) {
+            Object.keys(m.text).forEach(k => {
+                const el = document.querySelector('[data-edit="' + cssEsc(k) + '"]');
+                if (el) { el.textContent = m.text[k]; model.text[k] = m.text[k]; }
+            });
+        }
+        if (m.images) {
+            Object.keys(m.images).forEach(k => {
+                const el = document.querySelector('[data-img="' + cssEsc(k) + '"]');
+                if (el && m.images[k]) { el.setAttribute('src', m.images[k]); model.images[k] = m.images[k]; }
+            });
+        }
+    }
+    function cssEsc(s) { return String(s).replace(/"/g, '\\"'); }
+
+    /* ---- load saved content from the server (public) ---- */
+    fetch('/api/content', { cache: 'no-store' })
+        .then(r => r.ok ? r.json() : null)
+        .then(applyModel)
+        .catch(() => {});
+
+    /* ---- wrap each editable image so it can show a "change" button ---- */
+    imgEls().forEach(img => {
+        const parent = img.parentElement;
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'img-edit-btn';
+        btn.textContent = '📷 Change photo';
+        btn.addEventListener('click', () => startImageChange(img, btn));
+        // Only wrap if the parent isn't already a dedicated wrapper.
+        if (!parent.classList.contains('img-edit-wrap')) parent.classList.add('img-edit-wrap');
+        parent.appendChild(btn);
+    });
+
+    /* ---- capture text edits live into the model ---- */
+    document.addEventListener('input', e => {
+        if (!editing) return;
+        const el = e.target;
+        if (el.dataset.i18nHtml !== undefined) {
+            setI18n(el.dataset.i18nHtml, el.innerHTML, 'html');
+        } else if (el.dataset.i18n !== undefined) {
+            setI18n(el.dataset.i18n, el.textContent.replace(/\s+/g, ' ').trim(), 'text');
+        } else if (el.dataset.edit !== undefined) {
+            const k = el.dataset.edit, v = el.textContent;
+            if (v === DEFAULT_TEXT[k]) delete model.text[k]; else model.text[k] = v;
+            markDirty();
+        }
+    });
+    function setI18n(key, val, kind) {
+        t[lang][key] = val;
+        if (val === DEFAULT_I18N[lang][key]) delete model.i18n[lang][key];
+        else model.i18n[lang][key] = val;
+        markDirty();
+    }
+
+    /* ---- prevent link navigation while editing ---- */
+    document.addEventListener('click', e => {
+        if (!editing) return;
+        const a = e.target.closest('a');
+        if (a && !a.closest('.edit-bar')) { e.preventDefault(); }
+    }, true);
+
+    /* ---- image replace: pick, downscale, upload ---- */
+    const fileInput = document.getElementById('img-file-input');
+    let pendingImg = null, pendingBtn = null;
+    function startImageChange(img, btn) { pendingImg = img; pendingBtn = btn; fileInput.value = ''; fileInput.click(); }
+    fileInput.addEventListener('change', async () => {
+        const file = fileInput.files && fileInput.files[0];
+        if (!file || !pendingImg) return;
+        const img = pendingImg, btn = pendingBtn;
+        btn.classList.add('busy'); btn.textContent = 'Uploading…';
+        try {
+            const dataUrl = await downscale(file, 1800, 0.85);
+            const res = await fetch('/api/upload', {
+                method: 'POST', headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ password, filename: file.name, dataUrl })
+            });
+            const out = await res.json();
+            if (!res.ok) throw new Error(out.error || 'Upload failed');
+            img.setAttribute('src', out.url);
+            model.images[img.dataset.img] = out.url;
+            markDirty();
+            btn.textContent = '✓ Changed';
+            setTimeout(() => { btn.textContent = '📷 Change photo'; btn.classList.remove('busy'); }, 1400);
+        } catch (err) {
+            btn.textContent = '⚠ ' + (err.message || 'Failed');
+            setTimeout(() => { btn.textContent = '📷 Change photo'; btn.classList.remove('busy'); }, 2600);
+        }
+    });
+
+    // Read an image file, draw it onto a canvas scaled to maxW, return a JPEG data URL.
+    function downscale(file, maxW, quality) {
+        return new Promise((resolve, reject) => {
+            const url = URL.createObjectURL(file);
+            const im = new Image();
+            im.onload = () => {
+                URL.revokeObjectURL(url);
+                let { width, height } = im;
+                if (width > maxW) { height = Math.round(height * maxW / width); width = maxW; }
+                const c = document.createElement('canvas');
+                c.width = width; c.height = height;
+                c.getContext('2d').drawImage(im, 0, 0, width, height);
+                try { resolve(c.toDataURL('image/jpeg', quality)); }
+                catch (e) { reject(new Error('Could not process image')); }
+            };
+            im.onerror = () => { URL.revokeObjectURL(url); reject(new Error('Not a valid image')); };
+            im.src = url;
+        });
+    }
+
+    /* ---- dirty state / status ---- */
+    const statusEl = document.getElementById('eb-status');
+    const saveBtn  = document.getElementById('eb-save');
+    function markDirty() { dirty = true; if (statusEl) statusEl.textContent = '● Unsaved'; if (saveBtn) saveBtn.disabled = false; }
+    function markClean() { dirty = false; if (statusEl) statusEl.textContent = ''; }
+
+    /* ---- enter / exit edit mode ---- */
+    function enterEdit() {
+        editing = true;
+        document.body.classList.add('admin-editing');
+        document.querySelectorAll('.reveal').forEach(el => el.classList.add('in')); // make everything visible
+        textEls().forEach(el => { el.setAttribute('contenteditable', 'true'); el.spellcheck = false; });
+        markClean();
+    }
+    function exitEdit() {
+        if (dirty && !confirm('You have unsaved changes. Leave editing without saving?')) return;
+        editing = false;
+        document.body.classList.remove('admin-editing');
+        textEls().forEach(el => el.removeAttribute('contenteditable'));
+        markClean();
+    }
+
+    /* ---- save to server ---- */
+    async function save() {
+        if (!password) return;
+        saveBtn.disabled = true; statusEl.textContent = 'Saving…';
+        try {
+            const res = await fetch('/api/save', {
+                method: 'POST', headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ password, content: model })
+            });
+            const out = await res.json();
+            if (!res.ok) throw new Error(out.error || 'Save failed');
+            statusEl.textContent = '✓ Saved & live';
+            dirty = false;
+            setTimeout(() => { if (!dirty) statusEl.textContent = ''; }, 3000);
+        } catch (err) {
+            statusEl.textContent = '⚠ ' + (err.message || 'Save failed');
+            saveBtn.disabled = false;
+        }
+    }
+
+    /* ---- password modal + wiring ---- */
+    const overlay = document.getElementById('admin-overlay');
+    const msg     = document.getElementById('admin-msg');
+    const passIn  = document.getElementById('admin-pass');
+
+    function openLogin() {
+        overlay.classList.add('open'); overlay.setAttribute('aria-hidden', 'false');
+        msg.textContent = ''; msg.className = 'admin-msg';
+        passIn.value = ''; setTimeout(() => passIn.focus(), 200);
+    }
+    function closeLogin() { overlay.classList.remove('open'); overlay.setAttribute('aria-hidden', 'true'); }
+
+    document.getElementById('admin-open').addEventListener('click', openLogin);
+    document.getElementById('admin-cancel').addEventListener('click', closeLogin);
+    overlay.addEventListener('click', e => { if (e.target === overlay) closeLogin(); });
+
+    document.getElementById('admin-form').addEventListener('submit', async e => {
+        e.preventDefault();
+        const pw = passIn.value;
+        if (!pw) return;
+        msg.className = 'admin-msg'; msg.textContent = 'Checking…';
+        try {
+            const res = await fetch('/api/login', {
+                method: 'POST', headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ password: pw })
+            });
+            const out = await res.json().catch(() => ({}));
+            if (res.ok && out.ok) {
+                password = pw;
+                msg.className = 'admin-msg ok'; msg.textContent = '✓ Welcome';
+                setTimeout(() => { closeLogin(); enterEdit(); }, 400);
+            } else if (res.status === 401) {
+                msg.className = 'admin-msg err';
+                msg.textContent = out.error || 'Wrong password.';
+            } else {
+                msg.className = 'admin-msg err';
+                msg.textContent = out.error || 'Admin backend not set up yet (see ADMIN_SETUP.md).';
+            }
+        } catch (err) {
+            msg.className = 'admin-msg err';
+            msg.textContent = 'Server not reachable. Is the admin backend deployed?';
+        }
+    });
+
+    document.getElementById('eb-exit').addEventListener('click', exitEdit);
+    saveBtn.addEventListener('click', save);
+    window.addEventListener('beforeunload', e => { if (editing && dirty) { e.preventDefault(); e.returnValue = ''; } });
+
+    // Secret shortcut: Ctrl/Cmd + Shift + A also opens the admin login.
+    document.addEventListener('keydown', e => {
+        if ((e.ctrlKey || e.metaKey) && e.shiftKey && (e.key === 'A' || e.key === 'a')) { e.preventDefault(); openLogin(); }
+    });
+})();
 </script>
 </body>
 </html>
