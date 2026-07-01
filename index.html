@@ -226,6 +226,13 @@
         .visit-map { position:relative; overflow:hidden; min-height:600px; }
         .visit-map iframe { width:100%; height:100%; border:none; filter:grayscale(100%) invert(90%) contrast(85%) brightness(.85) sepia(15%); opacity:.65; }
         .visit-map-veil { position:absolute; inset:0; background:linear-gradient(to right, var(--black) 0%, transparent 18%); pointer-events:none; }
+        /* Gold pulsing ring marking Østrom on the map (the map is centered on the shop) */
+        .map-ring { position:absolute; top:50%; left:50%; width:64px; height:64px; margin:-32px 0 0 -32px; border:2px solid var(--gold); border-radius:50%; pointer-events:none; z-index:2; animation:mapPulse 2.4s ease-out infinite; }
+        .map-ring::after { content:''; position:absolute; inset:-14px; border:1px solid color-mix(in srgb, var(--gold) 35%, transparent); border-radius:50%; }
+        @keyframes mapPulse {
+            0%   { box-shadow:0 0 0 0 color-mix(in srgb, var(--gold) 45%, transparent); }
+            100% { box-shadow:0 0 0 28px transparent; }
+        }
         .hours { margin-top:52px; }
         .hour { display:flex; justify-content:space-between; align-items:center; padding:17px 0; border-bottom:1px solid rgba(255,255,255,.05); }
         .hour:last-child { border-bottom:none; }
@@ -842,6 +849,7 @@
     <div class="visit-map">
         <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1028.8!2d-6.769!3d62.0107!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x48d2f99c5bfffe61%3A0x65c59fdcbcd78f38!2s%C3%98strom!5e0!3m2!1sen!2sfo!4v1" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="Østrom location"></iframe>
         <div class="visit-map-veil"></div>
+        <div class="map-ring" aria-hidden="true"></div>
     </div>
 </div>
 
