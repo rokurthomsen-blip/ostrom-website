@@ -504,6 +504,86 @@
             .foot-bottom { flex-direction:column; gap:12px; text-align:center; }
             .foot-copy { font-size:10px; }
         }
+
+        /* ══════════════ ADMIN PANEL ══════════════ */
+        .admin-trigger {
+            font-size:11px; letter-spacing:.15em; text-transform:uppercase;
+            color:var(--dark-light); text-decoration:none; opacity:.5;
+            transition:color .3s, opacity .3s; align-self:center;
+        }
+        .admin-trigger:hover { color:var(--gold); opacity:1; }
+
+        /* password modal */
+        .admin-modal {
+            position:fixed; inset:0; z-index:10000; display:none;
+            align-items:center; justify-content:center;
+            background:rgba(4,4,4,.85); backdrop-filter:blur(6px);
+        }
+        .admin-modal.open { display:flex; }
+        .admin-box {
+            background:var(--dark-mid); border:1px solid var(--dark-light);
+            border-radius:14px; padding:38px 34px; width:min(90vw,380px);
+            text-align:center; box-shadow:0 30px 80px rgba(0,0,0,.6);
+        }
+        .admin-box-logo { font-family:var(--font-serif); font-size:30px; color:var(--white); margin-bottom:14px; }
+        .admin-box-logo span { color:var(--gold); }
+        .admin-box h3 { font-family:var(--font-serif); font-weight:500; font-size:24px; color:var(--white); margin-bottom:6px; }
+        .admin-box p { font-size:13px; color:var(--off-white); opacity:.7; margin-bottom:22px; line-height:1.5; }
+        .admin-box input {
+            width:100%; padding:13px 16px; font-family:var(--font-sans); font-size:15px;
+            background:var(--black); border:1px solid var(--dark-light); border-radius:8px;
+            color:var(--white); outline:none; transition:border-color .25s;
+        }
+        .admin-box input:focus { border-color:var(--gold); }
+        .admin-err { color:#e07a6a; font-size:12px; min-height:18px; margin-top:8px; }
+        .admin-box-btns { display:flex; gap:10px; margin-top:14px; }
+        .admin-btn {
+            flex:1; padding:11px 16px; font-family:var(--font-sans); font-size:12px;
+            letter-spacing:.08em; text-transform:uppercase; cursor:pointer;
+            background:var(--gold); color:var(--black); border:1px solid var(--gold);
+            border-radius:8px; transition:background .25s, color .25s, opacity .25s; white-space:nowrap;
+        }
+        .admin-btn:hover { background:var(--gold-light); }
+        .admin-btn.ghost { background:transparent; color:var(--off-white); border-color:var(--dark-light); }
+        .admin-btn.ghost:hover { border-color:var(--gold); color:var(--gold); }
+
+        /* editing toolbar */
+        .admin-bar {
+            position:fixed; left:0; right:0; bottom:0; z-index:9999;
+            display:none; align-items:center; gap:18px; flex-wrap:wrap;
+            padding:12px 20px; background:rgba(16,16,16,.97); backdrop-filter:blur(10px);
+            border-top:1px solid var(--gold); box-shadow:0 -10px 40px rgba(0,0,0,.5);
+        }
+        .admin-bar.open { display:flex; }
+        .admin-bar-title { font-size:13px; letter-spacing:.06em; color:var(--gold); font-weight:500; white-space:nowrap; }
+        .admin-dirty { display:none; color:#e0a44a; margin-left:8px; font-size:10px; vertical-align:middle; }
+        .admin-bar-hint { font-size:12px; color:var(--off-white); opacity:.7; flex:1; min-width:180px; }
+        .admin-bar-hint b { color:var(--white); font-weight:500; }
+        .admin-bar-actions { display:flex; gap:8px; }
+        .admin-bar-actions .admin-btn { flex:none; padding:9px 14px; }
+
+        /* editing affordances */
+        body.admin-editing { cursor:auto !important; }
+        body.admin-editing #cursor, body.admin-editing #follower { display:none !important; }
+        body.admin-editing { padding-bottom:64px; }
+        .admin-editable {
+            outline:1px dashed rgba(196,150,58,.5); outline-offset:3px;
+            cursor:text; border-radius:2px; transition:outline-color .2s, background .2s;
+        }
+        .admin-editable:hover  { outline-color:var(--gold); background:rgba(196,150,58,.06); }
+        .admin-editable:focus  { outline:2px solid var(--gold); background:rgba(196,150,58,.10); }
+        .admin-img-editable { cursor:pointer; outline:2px dashed rgba(196,150,58,.6); outline-offset:-2px; transition:outline-color .2s; }
+        .admin-img-editable:hover { outline-color:var(--gold); }
+        /* normal cursor for all admin controls (site hides the native cursor) */
+        .admin-modal, .admin-modal *, .admin-bar, .admin-bar * { cursor:auto; }
+        .admin-btn, .admin-trigger { cursor:pointer; }
+
+        @media (max-width:640px){
+            .admin-bar { gap:10px; padding:10px 14px; }
+            .admin-bar-hint { display:none; }
+            .admin-bar-actions { width:100%; }
+            .admin-bar-actions .admin-btn { flex:1; }
+        }
     </style>
 </head>
 <body>
@@ -776,9 +856,9 @@
         <div class="label reveal"                  data-i18n="visit.label">Come See Us</div>
         <h2 class="heading reveal" data-delay="1"  data-i18n-html="visit.heading">Come<br><em>visit</em><br>us</h2>
         <div class="hours reveal" data-delay="2">
-            <div class="hour"><span class="h-day" data-i18n="day.monThu">Monday – Thursday</span><span class="h-time">10:00 – 17:30</span></div>
-            <div class="hour"><span class="h-day" data-i18n="day.fri">Friday</span><span class="h-time">10:00 – 18:00</span></div>
-            <div class="hour"><span class="h-day" data-i18n="day.sat">Saturday</span><span class="h-time">10:00 – 16:00</span></div>
+            <div class="hour"><span class="h-day" data-i18n="day.monThu">Monday – Thursday</span><span class="h-time" data-eid="hours.monThu">10:00 – 17:30</span></div>
+            <div class="hour"><span class="h-day" data-i18n="day.fri">Friday</span><span class="h-time" data-eid="hours.fri">10:00 – 18:00</span></div>
+            <div class="hour"><span class="h-day" data-i18n="day.sat">Saturday</span><span class="h-time" data-eid="hours.sat">10:00 – 16:00</span></div>
             <div class="hour"><span class="h-day" data-i18n="day.sun">Sunday</span><span class="h-time closed" data-i18n="closed">Closed</span></div>
         </div>
         <div class="visit-contacts reveal" data-delay="3">
@@ -793,7 +873,7 @@
                 <span class="v-icon">📞</span>
                 <div>
                     <div class="v-lbl" data-i18n="contact.tel.label">Telephone</div>
-                    <div class="v-val"><a href="tel:+298312222">+298 312 222</a></div>
+                    <div class="v-val"><a href="tel:+298312222" data-eid="tel.visit">+298 312 222</a></div>
                 </div>
             </div>
             <div class="v-row">
@@ -833,14 +913,14 @@
             <ul class="foot-links">
                 <li><a href="#visit" data-i18n="foot.hours">Opening Hours</a></li>
                 <li><a href="#visit" data-i18n="foot.directions">Directions</a></li>
-                <li><a href="tel:+298312222">+298 312 222</a></li>
+                <li><a href="tel:+298312222" data-eid="tel.foot">+298 312 222</a></li>
                 <li><a href="mailto:info@ostrom.fo" data-i18n="foot.contact">Contact Us</a></li>
             </ul>
         </div>
         <div>
             <div class="foot-col-h" data-i18n="foot.connect">Connect</div>
             <ul class="foot-links">
-                <li class="foot-plain"><span data-i18n="foot.email">Email</span>: hj@ostrom.fo</li>
+                <li class="foot-plain"><span data-i18n="foot.email">Email</span>: <span data-eid="email.foot">hj@ostrom.fo</span></li>
                 <li><a href="https://www.facebook.com/ostromfo" target="_blank" rel="noopener">Facebook</a></li>
                 <li><a href="https://www.google.com/maps/search/ostrom+torshavn" target="_blank" rel="noopener">Google Maps</a></li>
             </ul>
@@ -851,6 +931,7 @@
         <div class="socials">
             <a href="https://www.facebook.com/ostromfo" class="soc-btn" target="_blank" rel="noopener" aria-label="Facebook">f</a>
             <a href="https://www.google.com/maps/search/ostrom+torshavn" class="soc-btn" target="_blank" rel="noopener" aria-label="Maps">g</a>
+            <a href="#" class="admin-trigger" id="adminTrigger">Admin</a>
         </div>
     </div>
 </footer>
@@ -1009,21 +1090,83 @@ const t = {
 let lang = 'fo';
 try { const saved = localStorage.getItem('ostrom-lang'); if (saved === 'en' || saved === 'fo') lang = saved; } catch (e) {}
 
+/* ══════════════════════════════════════════════════════════════
+   ADMIN CONTENT OVERRIDES  (text · raw text · images)
+   • Published edits  →  content.json  (fetched at page load, seen by everyone)
+   • Local edits      →  localStorage  (only this browser, until exported)
+   Precedence:  built-in dictionary  <  content.json  <  localStorage
+   ══════════════════════════════════════════════════════════════ */
+const OSTROM_ADMIN_PW = 'ostrom2026';         // change to set a new admin password
+const LS_OVERRIDES    = 'ostrom_admin_overrides_v1';
+
+function blankOv(){ return { text:{ en:{}, fo:{} }, raw:{}, img:{} }; }
+let pubOv = blankOv();   // from content.json (shared / published)
+let locOv = blankOv();   // from localStorage (this browser's unpublished edits)
+
+try {
+    const s = JSON.parse(localStorage.getItem(LS_OVERRIDES) || 'null');
+    if (s && typeof s === 'object') {
+        locOv.text.en = (s.text && s.text.en) || {};
+        locOv.text.fo = (s.text && s.text.fo) || {};
+        locOv.raw     = s.raw || {};
+        locOv.img     = s.img || {};
+    }
+} catch (e) {}
+
+function saveLocal(){ try { localStorage.setItem(LS_OVERRIDES, JSON.stringify(locOv)); } catch(e){} }
+
+/* Merged dictionary for a language: built-in < published < local */
+function mergedDict(l){ return Object.assign({}, t[l], pubOv.text[l] || {}, locOv.text[l] || {}); }
+
+/* Full merged override object — this is what "Download content.json" exports */
+function mergedOverrides(){
+    return {
+        text: {
+            en: Object.assign({}, pubOv.text.en, locOv.text.en),
+            fo: Object.assign({}, pubOv.text.fo, locOv.text.fo)
+        },
+        raw: Object.assign({}, pubOv.raw, locOv.raw),
+        img: Object.assign({}, pubOv.img, locOv.img)
+    };
+}
+
+/* Apply raw (non-translated) text overrides — phone, opening hours, email, … */
+function applyRaw(){
+    const rw = Object.assign({}, pubOv.raw, locOv.raw);
+    document.querySelectorAll('[data-eid]').forEach(el => {
+        const v = rw[el.dataset.eid];
+        if (v !== undefined) el.innerHTML = v;
+    });
+}
+
+/* Apply image overrides */
+function applyImages(){
+    const im = Object.assign({}, pubOv.img, locOv.img);
+    document.querySelectorAll('img[data-img-id]').forEach(el => {
+        const v = im[el.dataset.imgId];
+        if (v) el.src = v;
+    });
+}
+
+/* Give every <img> a stable id (document order) so overrides map back reliably */
+document.querySelectorAll('img').forEach((el, i) => { if (!el.dataset.imgId) el.dataset.imgId = 'img' + i; });
+
 /* Apply the current language to every piece of text on the page */
 function applyLang() {
+    const TT = mergedDict(lang);
     // plain text
     document.querySelectorAll('[data-i18n]').forEach(el => {
-        const v = t[lang][el.dataset.i18n];
+        const v = TT[el.dataset.i18n];
         if (v !== undefined) el.textContent = v;
     });
     // html content
     document.querySelectorAll('[data-i18n-html]').forEach(el => {
-        const v = t[lang][el.dataset.i18nHtml];
+        const v = TT[el.dataset.i18nHtml];
         if (v !== undefined) el.innerHTML = v;
     });
     // ticker
-    document.getElementById('tick1').innerHTML = t[lang]['ticker'];
-    document.getElementById('tick2').innerHTML = t[lang]['ticker'];
+    document.getElementById('tick1').innerHTML = TT['ticker'];
+    document.getElementById('tick2').innerHTML = TT['ticker'];
     // title & lang attr
     document.title = lang === 'fo'
         ? 'Østrom — Listrikt Handverk · Tórshavn, Føroyar'
@@ -1035,6 +1178,9 @@ function applyLang() {
     // dynamic copyright year (replaces {YEAR} in the footer)
     const copy = document.querySelector('[data-i18n="foot.copy"]');
     if (copy) copy.textContent = copy.textContent.replace('{YEAR}', new Date().getFullYear());
+    // admin overrides
+    applyRaw();
+    applyImages();
 }
 
 function setLang(newLang) {
@@ -1055,6 +1201,20 @@ document.getElementById('btn-fo').addEventListener('click', () => setLang('fo'))
 
 /* Show the site in the default language (Faroese) the moment it loads */
 applyLang();
+
+/* Load any PUBLISHED edits (content.json sitting next to index.html) and re-render.
+   Fails silently when the file isn't there — the site just shows its built-in content. */
+fetch('content.json', { cache: 'no-store' })
+    .then(r => r.ok ? r.json() : null)
+    .then(d => {
+        if (!d) return;
+        pubOv.text.en = (d.text && d.text.en) || {};
+        pubOv.text.fo = (d.text && d.text.fo) || {};
+        pubOv.raw     = d.raw || {};
+        pubOv.img     = d.img || {};
+        applyLang();
+    })
+    .catch(() => {});
 
 /* ── TOUCH DEVICE DETECTION ── */
 const isTouch = ('ontouchstart' in window) || navigator.maxTouchPoints > 0;
@@ -1155,6 +1315,149 @@ if (!isTouch) {
         if(heroTitle && y < window.innerHeight) heroTitle.style.transform = `translateY(${y*.18}px)`;
     }, { passive:true });
 }
+
+/* ══════════════════════════════════════════════════════════════
+   ADMIN PANEL — password gate + in-browser editing of text & images
+   ══════════════════════════════════════════════════════════════ */
+(function(){
+  function initAdmin(){
+    const trigger = document.getElementById('adminTrigger');
+    const modal   = document.getElementById('adminModal');
+    const pwInput = document.getElementById('adminPw');
+    const pwErr   = document.getElementById('adminPwErr');
+    const toolbar = document.getElementById('adminBar');
+    const fileInp = document.getElementById('adminFile');
+    const dirty   = document.getElementById('adminDirty');
+    if (!trigger || !modal || !toolbar) return;
+
+    const EDIT_SEL = '[data-i18n], [data-i18n-html], [data-eid]';
+    let editing = false;
+    let imgTarget = null;
+
+    /* ── password modal ── */
+    function openModal(){ modal.classList.add('open'); pwErr.textContent=''; pwInput.value=''; setTimeout(()=>pwInput.focus(),60); }
+    function closeModal(){ modal.classList.remove('open'); }
+    function tryLogin(){
+        if (pwInput.value === OSTROM_ADMIN_PW){ closeModal(); enterEdit(); }
+        else { pwErr.textContent = 'Incorrect password'; pwInput.select(); }
+    }
+    trigger.addEventListener('click', e => { e.preventDefault(); openModal(); });
+    modal.addEventListener('click', e => { if (e.target === modal) closeModal(); });
+    document.getElementById('adminPwCancel').addEventListener('click', closeModal);
+    document.getElementById('adminPwBtn').addEventListener('click', tryLogin);
+    pwInput.addEventListener('keydown', e => { if (e.key === 'Enter') tryLogin(); if (e.key === 'Escape') closeModal(); });
+
+    function markDirty(){ if (dirty) dirty.style.display = 'inline-block'; }
+
+    /* ── enter / exit editing ── */
+    function enterEdit(){
+        editing = true;
+        document.body.classList.add('admin-editing');
+        document.querySelectorAll(EDIT_SEL).forEach(el => {
+            el.setAttribute('contenteditable','true');
+            el.classList.add('admin-editable');
+        });
+        document.querySelectorAll('img[data-img-id]').forEach(el => el.classList.add('admin-img-editable'));
+        document.addEventListener('input', onTextEdit, true);
+        document.addEventListener('click', onEditClick, true);
+        toolbar.classList.add('open');
+    }
+    function exitEdit(){
+        editing = false;
+        document.body.classList.remove('admin-editing');
+        document.querySelectorAll('.admin-editable').forEach(el => {
+            el.removeAttribute('contenteditable');
+            el.classList.remove('admin-editable');
+        });
+        document.querySelectorAll('.admin-img-editable').forEach(el => el.classList.remove('admin-img-editable'));
+        document.removeEventListener('input', onTextEdit, true);
+        document.removeEventListener('click', onEditClick, true);
+        toolbar.classList.remove('open');
+    }
+
+    /* ── text editing → store into the right override bucket ── */
+    function onTextEdit(e){
+        const el = e.target.closest(EDIT_SEL);
+        if (!el) return;
+        if (el.dataset.i18n !== undefined)          locOv.text[lang][el.dataset.i18n] = el.textContent;
+        else if (el.dataset.i18nHtml !== undefined) locOv.text[lang][el.dataset.i18nHtml] = el.innerHTML;
+        else if (el.dataset.eid !== undefined)       locOv.raw[el.dataset.eid] = el.innerHTML;
+        saveLocal();
+        markDirty();
+    }
+
+    /* ── click handling while editing: swap images, block navigation ── */
+    function onEditClick(e){
+        if (e.target.closest('#adminBar, #adminModal')) return;      // let toolbar/modal work
+        const img = e.target.closest('img[data-img-id]');
+        if (img){ e.preventDefault(); e.stopPropagation(); imgTarget = img; fileInp.click(); return; }
+        const a = e.target.closest('a');
+        if (a){ e.preventDefault(); }                                 // don't follow links while editing
+    }
+    fileInp.addEventListener('change', () => {
+        const f = fileInp.files && fileInp.files[0];
+        if (!f || !imgTarget){ fileInp.value=''; return; }
+        const rd = new FileReader();
+        rd.onload = () => {
+            imgTarget.src = rd.result;
+            locOv.img[imgTarget.dataset.imgId] = rd.result;
+            saveLocal(); markDirty();
+            imgTarget = null;
+        };
+        rd.readAsDataURL(f);
+        fileInp.value = '';
+    });
+
+    /* ── toolbar actions ── */
+    document.getElementById('adminExport').addEventListener('click', () => {
+        const data = JSON.stringify(mergedOverrides(), null, 2);
+        const blob = new Blob([data], { type:'application/json' });
+        const url  = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url; a.download = 'content.json';
+        document.body.appendChild(a); a.click(); a.remove();
+        URL.revokeObjectURL(url);
+    });
+    document.getElementById('adminReset').addEventListener('click', () => {
+        if (!confirm('Discard ALL of your local edits and restore the published site?')) return;
+        locOv = blankOv();
+        saveLocal();
+        applyLang();
+        if (dirty) dirty.style.display = 'none';
+    });
+    document.getElementById('adminExit').addEventListener('click', exitEdit);
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', initAdmin);
+  else initAdmin();
+})();
 </script>
+
+<!-- ══ ADMIN: password modal ══ -->
+<div class="admin-modal" id="adminModal">
+    <div class="admin-box">
+        <div class="admin-box-logo">Ø<span>s</span>tröm</div>
+        <h3>Admin Access</h3>
+        <p>Enter the password to edit the site’s text and images.</p>
+        <input type="password" id="adminPw" placeholder="Password" autocomplete="off" spellcheck="false">
+        <div class="admin-err" id="adminPwErr"></div>
+        <div class="admin-box-btns">
+            <button class="admin-btn ghost" id="adminPwCancel" type="button">Cancel</button>
+            <button class="admin-btn" id="adminPwBtn" type="button">Enter</button>
+        </div>
+    </div>
+</div>
+
+<!-- ══ ADMIN: editing toolbar ══ -->
+<div class="admin-bar" id="adminBar">
+    <span class="admin-bar-title">✎ Editing&nbsp;mode<span class="admin-dirty" id="adminDirty" title="Unsaved changes">●</span></span>
+    <span class="admin-bar-hint">Click any <b>text</b> to edit · click any <b>image</b> to replace</span>
+    <span class="admin-bar-actions">
+        <button class="admin-btn" id="adminExport" type="button">⬇ Download content.json</button>
+        <button class="admin-btn ghost" id="adminReset" type="button">Reset</button>
+        <button class="admin-btn ghost" id="adminExit" type="button">Done</button>
+    </span>
+</div>
+<input type="file" id="adminFile" accept="image/*" hidden>
+
 </body>
 </html>
