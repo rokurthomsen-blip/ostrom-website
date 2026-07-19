@@ -1,21 +1,20 @@
 /* ═══════════════════════════════════════════════════════════════
    ØSTROM ADMIN EDITOR
    Click the ⚙ button in the footer → enter the password → the page
-   becomes editable. "Save & Publish" writes the changes to GitHub
-   (content.json + any new photos), and Vercel puts them live.
+   becomes editable. "Save & Publish" sends the changes to the
+   website's own server (api/publish.js), which writes them to
+   GitHub, and Vercel puts them live.
 
-   Note: this password only hides the editing screen. Publishing is
-   protected by the GitHub key, which is stored only in the owner's
-   own browser — so nobody else can change the live website.
+   The password is checked by the server, not by this file — so it
+   is not visible in the page source, and no GitHub key is ever
+   needed in the browser.
    ═══════════════════════════════════════════════════════════════ */
 (function () {
     'use strict';
 
-    var PASSWORD = 'ostrom2026';
-    var REPO = 'rokurthomsen-blip/ostrom-website';
-    var BRANCH = 'main';
-    var TOKEN_KEY = 'ostrom-gh-token';
+    var API = 'api/publish';
     var DEFAULT_COLORS = { gold: '#C4963A', black: '#080808', white: '#F8F5EF' };
+    var adminPw = null;       /* remembered after a successful login  */
 
     var editing = false;
     var dirty = false;
@@ -26,8 +25,25 @@
     /* ── helpers ── */
     function $(id) { return document.getElementById(id); }
     function clone(o) { return JSON.parse(JSON.stringify(o)); }
-    function b64(str) { return btoa(unescape(encodeURIComponent(str))); }
     function lang() { return window.OSTROM.getLang(); }
+
+    /* talk to the website's own publish server */
+    function apiPost(payload) {
+        return fetch(API, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+        }).then(function (r) {
+            return r.json().catch(function () { return {}; }).then(function (j) {
+                if (!r.ok) {
+                    var e = new Error(j.message || ('server said ' + r.status));
+                    e.code = j.error || r.status;
+                    throw e;
+                }
+                return j;
+            });
+        });
+    }
 
     function freshOv() {
         var base = window.OSTROM.overrides ? clone(window.OSTROM.overrides) : {};
@@ -46,9 +62,23 @@
     adminBtn.addEventListener('click', function () {
         if (editing) { openPanel('menu'); return; }
         var pw = window.prompt('Admin password:');
-        if (pw === null) return;
-        if (pw !== PASSWORD) { window.alert('Wrong password.'); return; }
-        enterEditMode();
+        if (pw === null || pw === '') return;
+        adminBtn.disabled = true;
+        apiPost({ action: 'check', password: pw })
+            .then(function () {
+                adminPw = pw;
+                enterEditMode();
+            })
+            .catch(function (err) {
+                if (err.code === 'password') {
+                    window.alert('Wrong password.');
+                } else if (err.code === 'setup') {
+                    window.alert('The publishing setup in Vercel is not finished yet, so editing is switched off. Ask Claude for the setup steps.');
+                } else {
+                    window.alert('Could not reach the website\'s server. Editing works on the live website (ostrom-website.vercel.app) while you are online.');
+                }
+            })
+            .then(function () { adminBtn.disabled = false; });
     });
 
     function enterEditMode() {
@@ -209,25 +239,6 @@
             '    <button class="admin-btn primary" id="adm-ticker-apply">Apply</button>' +
             '    <button class="admin-btn" id="adm-ticker-close">Cancel</button>' +
             '  </div>' +
-            '</div>' +
-            /* github token */
-            '<div id="adm-token" style="display:none">' +
-            '  <h3>One-time setup — connect to GitHub</h3>' +
-            '  <p id="adm-token-msg">To publish your changes, the editor needs a secret key from your GitHub account. You only do this once on this computer.</p>' +
-            '  <ol>' +
-            '    <li><a href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener">Click here to open the GitHub key page</a> (log in if it asks).</li>' +
-            '    <li>Token name: type <strong>website-editor</strong></li>' +
-            '    <li>Expiration: pick the longest option available.</li>' +
-            '    <li>Under <strong>Repository access</strong> choose <strong>Only select repositories</strong> and pick <strong>ostrom-website</strong>.</li>' +
-            '    <li>Open <strong>Repository permissions</strong>, find <strong>Contents</strong>, set it to <strong>Read and write</strong>.</li>' +
-            '    <li>Press the green <strong>Generate token</strong> button at the bottom.</li>' +
-            '    <li>Copy the long code it shows you and paste it below.</li>' +
-            '  </ol>' +
-            '  <input type="password" id="adm-token-input" placeholder="Paste the secret key here">' +
-            '  <div class="admin-row">' +
-            '    <button class="admin-btn primary" id="adm-token-save">Save key &amp; publish</button>' +
-            '    <button class="admin-btn" id="adm-token-cancel">Cancel</button>' +
-            '  </div>' +
             '</div>';
         document.body.appendChild(panel);
 
@@ -269,17 +280,6 @@
             setStatus('Scrolling text updated — press "Save & Publish" when you are done.');
         });
 
-        /* token */
-        $('adm-token-cancel').addEventListener('click', closePanels);
-        $('adm-token-save').addEventListener('click', function () {
-            var v = $('adm-token-input').value.trim();
-            if (!v) { window.alert('Please paste the key first.'); return; }
-            try { localStorage.setItem(TOKEN_KEY, v); } catch (e) {}
-            $('adm-token-input').value = '';
-            closePanels();
-            publish();
-        });
-
         /* save / exit */
         $('adm-save-btn').addEventListener('click', publish);
         $('adm-exit-btn').addEventListener('click', exitEditMode);
@@ -304,10 +304,10 @@
 
     function openPanel(which) {
         var panel = $('adm-panel');
-        ['colors', 'ticker', 'token'].forEach(function (p) {
+        ['colors', 'ticker'].forEach(function (p) {
             $('adm-' + p).style.display = (p === which) ? 'block' : 'none';
         });
-        panel.classList.toggle('open', which === 'colors' || which === 'ticker' || which === 'token');
+        panel.classList.toggle('open', which === 'colors' || which === 'ticker');
     }
     function closePanels() {
         var panel = $('adm-panel');
@@ -318,82 +318,47 @@
         if (s) s.textContent = msg;
     }
 
-    /* ═══ PUBLISH (save to GitHub → Vercel redeploys) ═══ */
+    /* ═══ PUBLISH (send to api/publish → GitHub → Vercel redeploys) ═══ */
     var saving = false;
 
     function publish() {
         if (saving) return;
-        var token = null;
-        try { token = localStorage.getItem(TOKEN_KEY); } catch (e) {}
-        if (!token) { openPanel('token'); return; }
         saving = true;
         $('adm-save-btn').disabled = true;
-        doPublish(token)
-            .then(function () {
-                dirty = false;
-                pendingImages = {};
-                window.OSTROM.overrides = clone(ov);
-                setStatus('✅ Published! Your changes will be live for everyone in about 1 minute.');
-            })
-            .catch(function (err) {
-                if (err && (err.status === 401 || err.status === 403)) {
-                    try { localStorage.removeItem(TOKEN_KEY); } catch (e) {}
-                    $('adm-token-msg').textContent = 'That key did not work (it may have expired). Please make a new one:';
-                    openPanel('token');
-                    setStatus('');
-                } else {
-                    setStatus('❌ Could not save: ' + ((err && err.message) || 'unknown error') + ' — please try again.');
-                }
-            })
-            .then(function () {
-                saving = false;
-                $('adm-save-btn').disabled = false;
-            });
-    }
 
-    function doPublish(token) {
         var keys = Object.keys(pendingImages);
         var chain = Promise.resolve();
         keys.forEach(function (key, i) {
             chain = chain.then(function () {
                 setStatus('Uploading photo ' + (i + 1) + ' of ' + keys.length + '…');
-                var path = 'images/' + key + '-' + Date.now() + '.jpg';
-                return ghPut(token, path, pendingImages[key].split(',')[1], 'Update photo: ' + key, null)
-                    .then(function () {
-                        ov.images[key] = path;
+                return apiPost({ action: 'image', password: adminPw, key: key, dataB64: pendingImages[key].split(',')[1] })
+                    .then(function (resp) {
+                        ov.images[key] = resp.path;
                         /* point the page at the final file name */
-                        document.querySelectorAll('[data-img="' + key + '"]').forEach(function (el) { el.src = path; });
+                        document.querySelectorAll('[data-img="' + key + '"]').forEach(function (el) { el.src = resp.path; });
                     });
             });
         });
-        return chain.then(function () {
+
+        chain.then(function () {
             setStatus('Saving…');
-            return ghGetSha(token, 'content.json');
-        }).then(function (sha) {
-            return ghPut(token, 'content.json', b64(JSON.stringify(ov, null, 2)), 'Update website content (admin editor)', sha);
-        });
-    }
-
-    function ghGetSha(token, path) {
-        return fetch('https://api.github.com/repos/' + REPO + '/contents/' + path + '?ref=' + BRANCH, {
-            headers: { 'Authorization': 'Bearer ' + token, 'Accept': 'application/vnd.github+json' }
-        }).then(function (r) {
-            if (r.status === 404) return null;
-            if (!r.ok) { var e = new Error('GitHub said ' + r.status); e.status = r.status; throw e; }
-            return r.json().then(function (j) { return j.sha; });
-        });
-    }
-
-    function ghPut(token, path, contentB64, message, sha) {
-        var body = { message: message, content: contentB64, branch: BRANCH };
-        if (sha) body.sha = sha;
-        return fetch('https://api.github.com/repos/' + REPO + '/contents/' + path, {
-            method: 'PUT',
-            headers: { 'Authorization': 'Bearer ' + token, 'Accept': 'application/vnd.github+json' },
-            body: JSON.stringify(body)
-        }).then(function (r) {
-            if (!r.ok) { var e = new Error('GitHub said ' + r.status); e.status = r.status; throw e; }
-            return r.json();
+            return apiPost({ action: 'content', password: adminPw, content: ov });
+        }).then(function () {
+            dirty = false;
+            pendingImages = {};
+            window.OSTROM.overrides = clone(ov);
+            setStatus('✅ Published! Your changes will be live for everyone in about 1 minute.');
+        }).catch(function (err) {
+            if (err.code === 'password') {
+                setStatus('❌ The password did not match — refresh the page and log in again.');
+            } else if (err.code === 'setup') {
+                setStatus('❌ The publishing setup in Vercel is not finished yet — ask Claude for the steps.');
+            } else {
+                setStatus('❌ Could not save: ' + (err.message || 'unknown error') + ' — please try again.');
+            }
+        }).then(function () {
+            saving = false;
+            $('adm-save-btn').disabled = false;
         });
     }
 })();
