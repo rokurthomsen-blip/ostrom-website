@@ -56,8 +56,10 @@ module.exports = async (req, res) => {
         return;
     }
 
-    const expected = process.env.ADMIN_PASSWORD;
-    const token = process.env.GITHUB_TOKEN;
+    /* Accept the standard names, or the names actually used in this
+       project's Vercel dashboard (admin_panel / TOKEN_OSTROM). */
+    const expected = process.env.ADMIN_PASSWORD || process.env.admin_panel;
+    const token = process.env.GITHUB_TOKEN || process.env.TOKEN_OSTROM;
     if (!expected || !token) {
         /* the one-time setup in the Vercel dashboard has not been done yet */
         res.status(500).json({ error: 'setup' });
